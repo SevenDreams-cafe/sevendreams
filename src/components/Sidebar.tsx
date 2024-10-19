@@ -1,0 +1,107 @@
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./shadcn/Accordion";
+
+import SevenDreamsImage from "@public/sevendreams.png";
+import { CashierIcon } from "./icons/CashierIcon";
+import { DollyFlatbedIcon } from "./icons/DollyFlatbedIcon";
+import { FolderOpenIcon } from "./icons/FolderOpenIcon";
+import { GridIcon } from "./icons/GridIcon";
+import { UsersAltIcon } from "./icons/UsersAltIcon";
+
+export function Sidebar() {
+  return (
+    <aside className="bg-blue-600 fixed top-0 z-50 h-full w-[280px]">
+      <div className="mx-5 mt-5">
+        <Image
+          src={SevenDreamsImage}
+          alt="7 Dreams"
+          className="w-36 object-contain"
+        />
+      </div>
+
+      <ul className="mt-12">
+        <li className="relative before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50">
+          <Link
+            href=""
+            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50 font-semibold"
+          >
+            <GridIcon className="w-5 h-5 fill-neutral-50" />
+            Dashboard
+          </Link>
+        </li>
+        <li className="relative">
+          <Accordion type="single" collapsible className="px-6 relative">
+            <AccordionItem value="item-1" className="border-b-0 outline-none">
+              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-neutral-50 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-neutral-50">
+                <FolderOpenIcon className="folderOpen w-5 h-5" />
+                <span>Master Data</span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col ml-7 gap-y-3">
+                <Link href="" className="text-neutral-50">
+                  Kategori
+                </Link>
+                <Link href="" className="text-neutral-50">
+                  Daftar Menu
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </li>
+        <li className="relative">
+          <Link
+            href=""
+            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50"
+          >
+            <DollyFlatbedIcon className="w-5 h-5 fill-neutral-50" />
+            Stock
+          </Link>
+        </li>
+        <li className="relative">
+          <Link
+            href=""
+            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50"
+          >
+            <CashierIcon className="w-5 h-5 fill-neutral-50" />
+            Kasir
+          </Link>
+        </li>
+        <li className="relative">
+          <Accordion type="single" collapsible className="px-6 relative">
+            <AccordionItem value="item-1" className="border-b-0 outline-none">
+              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-neutral-50 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-neutral-50">
+                <FolderOpenIcon className="folderOpen w-5 h-5" />
+                <span>Laporan</span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col ml-7 gap-y-3">
+                <Link href="" className="text-neutral-50">
+                  Transaksi Penjualan
+                </Link>
+                <Link href="" className="text-neutral-50">
+                  History Per Menu
+                </Link>
+                <Link href="" className="text-neutral-50">
+                  Cash Flow
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </li>
+        <li className="relative">
+          <Link
+            href=""
+            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50"
+          >
+            <UsersAltIcon className="w-5 h-5 fill-neutral-50" />
+            Management Users
+          </Link>
+        </li>
+      </ul>
+    </aside>
+  );
+}
