@@ -72,7 +72,10 @@ export default function Categori() {
               </TableHeader>
               <TableBody>
                 {dataCategori.map((categori, categoriIndex) => (
-                  <TableRow tabIndex={categoriIndex}>
+                  <TableRow
+                    key={`${categori.id}${categoriIndex + 1}`}
+                    tabIndex={categoriIndex}
+                  >
                     <TableCell>{categoriIndex + 1}</TableCell>
                     <TableCell>{categori.name}</TableCell>
                     <TableCell className="text-center">
