@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // import { Button } from "@components/shadcn/Button";
-import { Button } from "@components/shadcn/Button";
+import { Button } from "@components/shadcn/button";
 import { Input } from "@components/shadcn/Input";
 import {
   Dialog,
