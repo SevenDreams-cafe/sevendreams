@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -7,7 +8,7 @@ import {
   AccordionTrigger,
 } from "./shadcn/Accordion";
 
-import SevenDreamsImage from "@public/sevendreams.png";
+import SevenDreamsImage from "@public/sevendreams-white.png";
 import { CashierIcon } from "./icons/CashierIcon";
 import { DollyFlatbedIcon } from "./icons/DollyFlatbedIcon";
 import { FolderOpenIcon } from "./icons/FolderOpenIcon";
@@ -15,6 +16,8 @@ import { GridIcon } from "./icons/GridIcon";
 import { UsersAltIcon } from "./icons/UsersAltIcon";
 
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="bg-blue-600 fixed top-0 z-50 h-full w-[280px]">
       <div className="mx-5 mt-5">
@@ -26,10 +29,17 @@ export function Sidebar() {
       </div>
 
       <ul className="mt-12">
-        <li className="relative before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50">
+        <li
+          className={`${
+            pathname === "/" &&
+            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+          } relative`}
+        >
           <Link
-            href=""
-            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50 font-semibold"
+            href="/"
+            className={`${
+              pathname === "/" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
           >
             <GridIcon className="w-5 h-5 fill-neutral-50" />
             Dashboard
@@ -43,29 +53,53 @@ export function Sidebar() {
                 <span>Master Data</span>
               </AccordionTrigger>
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
-                <Link href="" className="text-neutral-50">
+                <Link
+                  href="/categori"
+                  className={`${
+                    pathname === "/categori" ? "font-semibold" : "font-normal"
+                  } text-neutral-50`}
+                >
                   Kategori
                 </Link>
-                <Link href="" className="text-neutral-50">
+                <Link
+                  href="/menu"
+                  className={`${
+                    pathname === "/menu" ? "font-semibold" : "font-normal"
+                  } text-neutral-50`}
+                >
                   Daftar Menu
                 </Link>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </li>
-        <li className="relative">
+        <li
+          className={`${
+            pathname === "/stock" &&
+            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+          } relative`}
+        >
           <Link
-            href=""
-            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50"
+            href="/stock"
+            className={`${
+              pathname === "/stock" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
           >
             <DollyFlatbedIcon className="w-5 h-5 fill-neutral-50" />
             Stock
           </Link>
         </li>
-        <li className="relative">
+        <li
+          className={`${
+            pathname === "/cashier" &&
+            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+          } relative`}
+        >
           <Link
-            href=""
-            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50"
+            href="/cashier"
+            className={`${
+              pathname === "/cashier" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
           >
             <CashierIcon className="w-5 h-5 fill-neutral-50" />
             Kasir
@@ -79,23 +113,47 @@ export function Sidebar() {
                 <span>Laporan</span>
               </AccordionTrigger>
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
-                <Link href="" className="text-neutral-50">
+                <Link
+                  href=""
+                  className={`${
+                    pathname === "/transaksi" ? "font-semibold" : "font-normal"
+                  } text-neutral-50`}
+                >
                   Transaksi Penjualan
                 </Link>
-                <Link href="" className="text-neutral-50">
+                <Link
+                  href=""
+                  className={`${
+                    pathname === "/history-menu"
+                      ? "font-semibold"
+                      : "font-normal"
+                  } text-neutral-50`}
+                >
                   History Per Menu
                 </Link>
-                <Link href="" className="text-neutral-50">
+                <Link
+                  href=""
+                  className={`${
+                    pathname === "/cash-flow" ? "font-semibold" : "font-normal"
+                  } text-neutral-50`}
+                >
                   Cash Flow
                 </Link>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </li>
-        <li className="relative">
+        <li
+          className={`${
+            pathname === "/management-users" &&
+            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+          } relative`}
+        >
           <Link
-            href=""
-            className="flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50"
+            href="/management-users"
+            className={`${
+              pathname === "/management-users" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
           >
             <UsersAltIcon className="w-5 h-5 fill-neutral-50" />
             Management Users
