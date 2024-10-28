@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Link from "next/link";
 
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
@@ -18,8 +17,6 @@ import {
   TableCell,
   TableRow,
 } from "@components/shadcn/Table";
-
-import { Fullscreen } from "@components/Fullscreen";
 
 import { dataCategori } from "@datas/dataCategori";
 
