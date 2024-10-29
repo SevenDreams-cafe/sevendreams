@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 body,
-:fullscreen,
-:-webkit-full-screen {
-  @apply bg-neutral-200;
+:fullscreen {
+  @apply bg-neutral-200 -z-10;
 }

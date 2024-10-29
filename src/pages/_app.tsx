@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Head from "next/head";
 
@@ -10,44 +10,35 @@ import { Sidebar } from "@components/Sidebar";
 
 export default function App({ Component, pageProps }: AppProps) {
   // var elem = document.documentElement;
-  // function openFullscreen() {
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if (elem.mozRequestFullScreen) {
-  //     /* Firefox */
-  //     elem.mozRequestFullScreen();
-  //   } else if (elem.webkitRequestFullscreen) {
-  //     /* Chrome, Safari & Opera */
-  //     elem.webkitRequestFullscreen();
-  //   } else if (elem.msRequestFullscreen) {
-  //     /* IE/Edge */
-  //     elem.msRequestFullscreen();
-  //   }
-  //   document.getElementById("openfull").style.display = "none";
-  //   document.getElementById("exitfull").style.display = "block";
-  // }
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  const toggleFullscreen = () => {
-    if (elementRef.current) {
+  async function toggleFullscreen() {
+    try {
       if (!document.fullscreenElement) {
-        elementRef.current.requestFullscreen().catch((err) => {
-          console.error(
-            `Error attempting to enable fullscreen mode: ${err.message}`
-          );
-        });
-      } else {
-        document.exitFullscreen().catch((err) => {
-          console.error(
-            `Error attempting to exit fullscreen mode: ${err.message}`
-          );
-        });
+        await document.documentElement.requestFullscreen();
+        if (screen.orientation && (screen.orientation as any).lock) {
+          await (screen.orientation as any).lock("landscape");
+        }
+      } else if (document.exitFullscreen) {
+        await document.exitFullscreen();
+        if (screen.orientation && (screen.orientation as any).unlock) {
+          await (screen.orientation as any).unlock();
+        }
       }
+    } catch (error) {
+      console.error("Gagal mengubah ke mode fullscreen landscape:", error);
     }
-  };
+  }
+
+  useEffect(() => {
+    const onFullscreenChange = () =>
+      setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
   return (
-    <div ref={elementRef}>
+    <>
       <Head>
         <title>Seven Dreams</title>
         <link
@@ -57,19 +48,18 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <div>
-        <Navbar />
-        <Sidebar />
+      <Navbar />
+      <Sidebar />
 
-        <Component {...pageProps} />
-      </div>
-
-      <button
-        onClick={toggleFullscreen}
-        className="absolute right-20 bottom-10"
-      >
-        Toggle
-      </button>
-    </div>
+      {isFullscreen === false && (
+        <button
+          onClick={toggleFullscreen}
+          className="absolute right-20 bottom-10 "
+        >
+          Toggle
+        </button>
+      )}
+      <Component {...pageProps} />
+    </>
   );
 }

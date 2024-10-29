@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
@@ -22,7 +23,7 @@ import { dataCategori } from "@datas/dataCategori";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
-export default function Categori() {
+export default function DaftarMenu() {
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState({ id: 0, name: "" });
@@ -56,28 +57,53 @@ export default function Categori() {
               className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50"
               onClick={() => setAddOpen(true)}
             >
-              Buat Kategori Baru
+              Buat Menu Baru
             </Button>
           </div>
           <div className="mt-5">
             <Table>
               <TableHeader>
-                <TableRow className="text-center">
-                  <TableHead className="w-[60px]">#</TableHead>
-                  <TableHead className="w-[400px]">Nama Kategori</TableHead>
+                <TableRow>
+                  <TableHead className="w-[60px] text-center">#</TableHead>
+                  <TableHead className="w-[80px] text-center">Gambar</TableHead>
+                  <TableHead className="w-[80px] text-center">
+                    Kode Menu
+                  </TableHead>
+                  <TableHead className="w-[100px] text-center">
+                    Nama Menu
+                  </TableHead>
+                  <TableHead className="w-[100px] text-center">
+                    Harga Pokok
+                  </TableHead>
+                  <TableHead className="w-[100px] text-center">
+                    Harga Jual
+                  </TableHead>
                   <TableHead className="w-[120px] text-center">
                     Action
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="text-center">
                 {dataCategori.map((categori, categoriIndex) => (
                   <TableRow
                     key={`${categori.id}${categoriIndex + 1}`}
                     tabIndex={categoriIndex}
                   >
                     <TableCell>{categoriIndex + 1}</TableCell>
+                    <TableCell className="">
+                      <div className="relative w-16 h-16 mx-auto">
+                        <Image
+                          src="/images/menu/bakso.jpg"
+                          alt="Bakso"
+                          className="object-cover"
+                          fill
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell>P0001</TableCell>
                     <TableCell>{categori.name}</TableCell>
+                    <TableCell>Rp. 20.000,00</TableCell>
+                    <TableCell>Rp. 50.000,00</TableCell>
                     <TableCell className="text-center">
                       <Button
                         variant="secondary"
