@@ -23,6 +23,6 @@
       "@avatar/*": ["./public/images/avatar/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types/globals.d.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Head from "next/head";
 
@@ -16,13 +16,13 @@ export default function App({ Component, pageProps }: AppProps) {
     try {
       if (!document.fullscreenElement) {
         await document.documentElement.requestFullscreen();
-        if (screen.orientation && (screen.orientation as any).lock) {
-          await (screen.orientation as any).lock("landscape");
+        if (screen.orientation) {
+          await screen.orientation.lock("landscape");
         }
       } else if (document.exitFullscreen) {
         await document.exitFullscreen();
-        if (screen.orientation && (screen.orientation as any).unlock) {
-          await (screen.orientation as any).unlock();
+        if (screen.orientation) {
+          screen.orientation.unlock();
         }
       }
     } catch (error) {
