@@ -1,15 +1,8 @@
-import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@components/shadcn/Dialog";
 import {
   Table,
   TableHead,
@@ -19,24 +12,11 @@ import {
   TableRow,
 } from "@components/shadcn/Table";
 
-import { dataCategori } from "@datas/dataCategori";
+import { dataMenu } from "@datas/dataMenu";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
 export default function DaftarMenu() {
-  const [addOpen, setAddOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, name: "" });
-
-  function handleEdit(id: number, name: string) {
-    setEditData({ id, name });
-    setEditOpen(true);
-  }
-
-  function handleEditChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEditData({ ...editData, name: e.target.value });
-  }
-
   return (
     <>
       <main className="ml-[300px] mr-[20px] mt-[100px]">
@@ -51,14 +31,12 @@ export default function DaftarMenu() {
               <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-neutral-700" />
             </div>
 
-            <Button
-              type="button"
-              variant="secondary"
-              className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50"
-              onClick={() => setAddOpen(true)}
+            <Link
+              href="menu/tambah-menu"
+              className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 py-2.5 px-4 text-sm rounded-md"
             >
               Buat Menu Baru
-            </Button>
+            </Link>
           </div>
           <div className="mt-5">
             <Table>
@@ -84,12 +62,12 @@ export default function DaftarMenu() {
                 </TableRow>
               </TableHeader>
               <TableBody className="text-center">
-                {dataCategori.map((categori, categoriIndex) => (
+                {dataMenu.map((menu, menuIndex) => (
                   <TableRow
-                    key={`${categori.id}${categoriIndex + 1}`}
-                    tabIndex={categoriIndex}
+                    key={`${menu.id}${menuIndex + 1}`}
+                    tabIndex={menuIndex}
                   >
-                    <TableCell>{categoriIndex + 1}</TableCell>
+                    <TableCell>{menuIndex + 1}</TableCell>
                     <TableCell className="">
                       <div className="relative w-16 h-16 mx-auto">
                         <Image
@@ -101,18 +79,19 @@ export default function DaftarMenu() {
                       </div>
                     </TableCell>
                     <TableCell>P0001</TableCell>
-                    <TableCell>{categori.name}</TableCell>
-                    <TableCell>Rp. 20.000,00</TableCell>
-                    <TableCell>Rp. 50.000,00</TableCell>
+                    <TableCell className="capitalize">{menu.name}</TableCell>
+                    <TableCell>Rp. {menu.hargaPokok}</TableCell>
+                    <TableCell>Rp. {menu.hargaJual}</TableCell>
                     <TableCell className="text-center">
-                      <Button
-                        variant="secondary"
-                        type="button"
-                        className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto rounded-md"
-                        onClick={() => handleEdit(categori.id, categori.name)}
-                      >
-                        Edit
-                      </Button>
+                      <Link href={`/menu/edit?id=${menu.id}`}>
+                        <Button
+                          variant="secondary"
+                          type="button"
+                          className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto rounded-md"
+                        >
+                          Edit
+                        </Button>
+                      </Link>
                       <span className="px-1.5">||</span>
                       <Button
                         variant="secondary"
@@ -129,70 +108,6 @@ export default function DaftarMenu() {
           </div>
         </section>
       </main>
-
-      {/* Modal Tambah Kategori */}
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="bg-neutral-50">
-          <DialogHeader>
-            <DialogTitle>Buat Kategori Baru</DialogTitle>
-          </DialogHeader>
-          <div className="mt-5">
-            <form className="flex flex-col gap-y-4">
-              <Input placeholder="Masukkan nama kategori..." />
-              <div className="flex justify-end gap-x-3 items-center">
-                <DialogClose
-                  type="button"
-                  className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-sm rounded-md"
-                >
-                  Closed
-                </DialogClose>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min py-2"
-                >
-                  Buat Kategori Baru
-                </Button>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Modal Edit Kategori */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="bg-neutral-50">
-          <DialogHeader>
-            <DialogTitle>Edit Kategori</DialogTitle>
-          </DialogHeader>
-          <div className="mt-5">
-            <form className="flex flex-col gap-y-4">
-              <Input
-                onChange={handleEditChange}
-                value={editData.name}
-                placeholder="Masukkan nama kategori..."
-              />
-              <div className="flex justify-end gap-x-3 items-center">
-                <DialogClose
-                  type="button"
-                  className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-sm rounded-md"
-                >
-                  Closed
-                </DialogClose>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min py-2"
-                >
-                  Simpan Perubahan
-                </Button>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* <Fullscreen /> */}
     </>
   );
 }

@@ -51,15 +51,17 @@ export default function App({ Component, pageProps }: AppProps) {
       <Navbar />
       <Sidebar />
 
+      <Component {...pageProps} />
+
       {isFullscreen === false && (
         <button
+          type="button"
           onClick={toggleFullscreen}
-          className="absolute right-20 bottom-10 "
+          className="fixed right-20 bottom-10 "
         >
           Toggle
         </button>
       )}
-      <Component {...pageProps} />
     </>
   );
 }
