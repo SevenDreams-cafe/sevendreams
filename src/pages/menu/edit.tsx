@@ -17,15 +17,15 @@ import { Textarea } from "@components/shadcn/Textarea";
 
 import { dataMenu } from "@datas/dataMenu";
 
-interface MenuProps {
-  id: number;
-  name: string;
-  idCategori: number;
-  hargaPokok: number;
-  hargaJual: number;
-  stok: number;
-  keterangan: string;
-}
+// interface MenuProps {
+//   id: number;
+//   name: string;
+//   idCategori: number;
+//   hargaPokok: number;
+//   hargaJual: number;
+//   stok: number;
+//   keterangan: string;
+// }
 
 export default function EdithMenu() {
   const router = useRouter();
