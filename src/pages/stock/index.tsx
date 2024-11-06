@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@components/shadcn/Button";
@@ -30,20 +29,13 @@ export default function DaftarMenu() {
               />
               <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-neutral-700" />
             </div>
-
-            <Link
-              href="menu/tambah-menu"
-              className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 py-2.5 px-4 text-sm rounded-md"
-            >
-              Buat Menu Baru
-            </Link>
           </div>
           <div className="mt-5">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[60px] text-center">#</TableHead>
-                  <TableHead className="w-[80px] text-center">Gambar</TableHead>
+
                   <TableHead className="w-[80px] text-center">
                     Kode Menu
                   </TableHead>
@@ -53,6 +45,7 @@ export default function DaftarMenu() {
                   <TableHead className="w-[100px] text-center">
                     Kategori
                   </TableHead>
+                  <TableHead className="w-[80px] text-center">Stock</TableHead>
                   <TableHead className="w-[100px] text-center">
                     Harga Pokok
                   </TableHead>
@@ -71,18 +64,9 @@ export default function DaftarMenu() {
                     tabIndex={menuIndex}
                   >
                     <TableCell>{menuIndex + 1}</TableCell>
-                    <TableCell className="">
-                      <div className="relative w-16 h-16 mx-auto">
-                        <Image
-                          src="/images/menu/bakso.jpg"
-                          alt="Bakso"
-                          className="object-cover"
-                          fill
-                        />
-                      </div>
-                    </TableCell>
                     <TableCell>P0001</TableCell>
                     <TableCell className="capitalize">{menu.name}</TableCell>
+                    <TableCell>100</TableCell>
                     <TableCell>Nasi</TableCell>
                     <TableCell>Rp. {menu.hargaPokok}</TableCell>
                     <TableCell>Rp. {menu.hargaJual}</TableCell>
@@ -91,19 +75,11 @@ export default function DaftarMenu() {
                         <Button
                           variant="secondary"
                           type="button"
-                          className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto rounded-md"
+                          className="w-auto bg-blue-600 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
                         >
-                          Edit
+                          Add
                         </Button>
                       </Link>
-                      <span className="px-1.5">||</span>
-                      <Button
-                        variant="secondary"
-                        type="button"
-                        className="w-auto inline-block bg-red-500 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
-                      >
-                        Delete
-                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
