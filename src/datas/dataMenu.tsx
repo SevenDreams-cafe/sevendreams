@@ -8,5 +8,6 @@ export const dataMenu = [
     stok: 12,
     keterangan:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, a! Reiciendis sit odio doloremque hic architecto mollitia ratione a asperiores?",
+    images: "/images/menu/bakso.jpg",
   },
 ];
