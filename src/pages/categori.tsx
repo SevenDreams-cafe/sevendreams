@@ -1,14 +1,8 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@components/shadcn/Dialog";
+
 import {
   Table,
   TableHead,
@@ -18,27 +12,88 @@ import {
   TableRow,
 } from "@components/shadcn/Table";
 
-import { dataCategori } from "@datas/dataCategori";
+import { CategoriProps } from "../types/categoris";
 
+import { EditCategoriDialog } from "@components/categori/EditCategoriDialog";
+import { InsertCategori } from "@components/categori/InsertCategori";
 import { SearchIcon } from "@components/icons/SearchIcon";
 
+import { supabase } from "@utils/supabase";
+
 export default function Categori() {
-  const [addOpen, setAddOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, name: "" });
+  const [loading, setLoading] = useState(true);
+  const [dataCategori, setDataCategori] = useState<CategoriProps[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  function handleEdit(id: number, name: string) {
-    setEditData({ id, name });
-    setEditOpen(true);
+  function handleNewItem(item: CategoriProps) {
+    setDataCategori((prevItems) => [...prevItems, item]);
   }
 
-  function handleEditChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEditData({ ...editData, name: e.target.value });
-  }
+  const fetchCategories = async () => {
+    const { data, error } = await supabase.from("tbl_categori").select("*");
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setDataCategori(data || []);
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    async function fetchCategori() {
+      try {
+        const response = await fetch("/api/categori/getCategori");
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        const data = await response.json();
+        setDataCategori(data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCategori();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    const confirmed = window.confirm(
+      "Apakah Anda yakin ingin menghapus kategori ini?"
+    );
+    if (!confirmed) return;
+
+    try {
+      const { error } = await supabase
+        .from("tbl_categori")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        throw error;
+      }
+
+      // Hapus dari state lokal setelah berhasil dihapus dari Supabase
+      setDataCategori((prev) => prev.filter((item) => item.id !== id));
+      alert("Kategori berhasil dihapus!");
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      alert("Gagal menghapus kategori. Silakan coba lagi.");
+    }
+  };
+
+  const filteredCategori = dataCategori.filter((categori) =>
+    categori.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <>
-      <main className="ml-[300px] mr-[20px] mt-[100px]">
+    <main className="ml-[300px] mr-[20px] mt-[100px]">
+      {loading && <p>Loading...</p>}
+      {!loading && (
         <section className="w-full p-8 bg-white rounded-md">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
@@ -46,127 +101,59 @@ export default function Categori() {
                 type="text"
                 className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-neutral-200 bg-neutral-50 w-full pl-8"
                 placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-neutral-700" />
             </div>
 
-            <Button
-              type="button"
-              variant="secondary"
-              className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50"
-              onClick={() => setAddOpen(true)}
-            >
-              Buat Kategori Baru
-            </Button>
+            <InsertCategori onNewItem={handleNewItem} />
           </div>
           <div className="mt-5">
-            <Table>
-              <TableHeader>
-                <TableRow className="text-center">
-                  <TableHead className="w-[60px]">#</TableHead>
-                  <TableHead className="w-[400px]">Nama Kategori</TableHead>
-                  <TableHead className="w-[120px] text-center">
-                    Action
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {dataCategori.map((categori, categoriIndex) => (
-                  <TableRow
-                    key={`${categori.id}${categoriIndex + 1}`}
-                    tabIndex={categoriIndex}
-                  >
-                    <TableCell>{categoriIndex + 1}</TableCell>
-                    <TableCell>{categori.name}</TableCell>
-                    <TableCell className="text-center">
-                      <Button
-                        variant="secondary"
-                        type="button"
-                        className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto rounded-md"
-                        onClick={() => handleEdit(categori.id, categori.name)}
-                      >
-                        Edit
-                      </Button>
-                      <span className="px-1.5">||</span>
-                      <Button
-                        variant="secondary"
-                        type="button"
-                        className="w-auto inline-block bg-red-500 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
+            {filteredCategori.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow className="text-center">
+                    <TableHead className="w-[60px]">#</TableHead>
+                    <TableHead className="w-[400px]">Nama Kategori</TableHead>
+                    <TableHead className="w-[120px] text-center">
+                      Action
+                    </TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredCategori.map((categori, index) => (
+                    <TableRow key={categori.id} tabIndex={index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{categori.name}</TableCell>
+                      <TableCell className="text-center">
+                        <EditCategoriDialog
+                          categoryId={categori.id}
+                          currentName={categori.name}
+                          onCategoryUpdated={fetchCategories}
+                        />
+                        <span className="px-1.5">||</span>
+                        <Button
+                          variant="secondary"
+                          type="button"
+                          className="w-auto bg-red-500 text-neutral-50 px-3 py-1.5 rounded-md"
+                          onClick={() => handleDelete(categori.id)}
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <p className="text-center text-neutral-500">
+                No categories found.
+              </p>
+            )}
           </div>
         </section>
-      </main>
-
-      {/* Modal Tambah Kategori */}
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="bg-neutral-50">
-          <DialogHeader>
-            <DialogTitle>Buat Kategori Baru</DialogTitle>
-          </DialogHeader>
-          <div className="mt-5">
-            <form className="flex flex-col gap-y-4">
-              <Input placeholder="Masukkan nama kategori..." />
-              <div className="flex justify-end gap-x-3 items-center">
-                <DialogClose
-                  type="button"
-                  className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-sm rounded-md"
-                >
-                  Closed
-                </DialogClose>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min py-2"
-                >
-                  Buat Kategori Baru
-                </Button>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Modal Edit Kategori */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="bg-neutral-50">
-          <DialogHeader>
-            <DialogTitle>Edit Kategori</DialogTitle>
-          </DialogHeader>
-          <div className="mt-5">
-            <form className="flex flex-col gap-y-4">
-              <Input
-                onChange={handleEditChange}
-                value={editData.name}
-                placeholder="Masukkan nama kategori..."
-              />
-              <div className="flex justify-end gap-x-3 items-center">
-                <DialogClose
-                  type="button"
-                  className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-sm rounded-md"
-                >
-                  Closed
-                </DialogClose>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min py-2"
-                >
-                  Simpan Perubahan
-                </Button>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* <Fullscreen /> */}
-    </>
+      )}
+    </main>
   );
 }
