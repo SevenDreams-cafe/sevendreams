@@ -19,6 +19,8 @@
       "@pages/*": ["./src/pages/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@libs/*": ["./src/libs/*"],
+      "@types/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"],
       "@public/*": ["./public/*"],
       "@avatar/*": ["./public/images/avatar/*"]
     }
