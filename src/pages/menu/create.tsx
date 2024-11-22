@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { FormEvent } from "react";
 import Link from "next/link";
 
 import { Button } from "@components/shadcn/Button";
@@ -12,24 +14,97 @@ import {
   SelectValue,
 } from "@components/shadcn/Select";
 import { Textarea } from "@components/shadcn/Textarea";
+import { supabase } from "@utils/supabase";
+
+interface DataCategoriProps {
+  id: number;
+  name: string;
+}
 
 export default function TambahMenu() {
+  const [name, setName] = useState("");
+  const [categoriID, setCategoriID] = useState("");
+  const [hargaPokok, setHargaPokok] = useState("");
+  const [hargaJual, setHargaJual] = useState("");
+  const [stock, setStock] = useState("");
+  const [imagesUrl, setImagesUrl] = useState<File | null>(null);
+
+  const [dataCategori, setDataCategori] = useState<DataCategoriProps[]>([]);
+
+  const [loading, setLoading] = useState(false);
+
+  async function fetchCategori() {
+    const response = await fetch("/api/categori/getCategori");
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    const data = await response.json();
+    setDataCategori(data);
+  }
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const fileName = `${Date.now()}${imagesUrl?.name}`;
+
+      await supabase.storage
+        .from("images_menu")
+        .upload(fileName, imagesUrl as File);
+
+      const { data: publicUrlData } = supabase.storage
+        .from("images_menu")
+        .getPublicUrl(fileName);
+
+      const imageUrl = publicUrlData.publicUrl;
+
+      await supabase.from("tbl_menu").insert({
+        name,
+        id_categori: parseFloat(categoriID),
+        harga_pokok: parseFloat(hargaPokok),
+        harga_jual: parseFloat(hargaJual),
+        stock: parseInt(stock, 10),
+        image_url: imageUrl,
+      });
+
+      setName("");
+      setHargaPokok("");
+      setHargaJual("");
+      setStock("");
+    } finally {
+      setImagesUrl(null);
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategori();
+  }, []);
+
   return (
     <main className="ml-[300px] mr-[20px] mt-[100px] shadow">
       <section className="w-full p-8 bg-white rounded-md">
         <h2 className="text-lg font-bold">Tambah Menu</h2>
 
-        <form className="mt-4 grid grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
           <div className="flex flex-col gap-y-4">
             <div>
               <Label className="text-sm text-neutral-600">Kategori Menu</Label>
-              <Select>
+              <Select onValueChange={(value) => setCategoriID(value)}>
                 <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm focus:border-blue-500 duration-150 text-neutral-600">
                   <SelectValue placeholder="Pilih Kategori Makanan..." />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
                   <SelectGroup>
-                    <SelectItem value="pedas">Makanan Pedas</SelectItem>
+                    {dataCategori.map((categori, categoriIndex) => (
+                      <SelectItem
+                        value={`${categori.id}`}
+                        key={categoriIndex + 1}
+                      >
+                        {categori.name}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -40,6 +115,8 @@ export default function TambahMenu() {
                 type="text"
                 className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
                 placeholder="Masukkan nama menu..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
@@ -48,6 +125,8 @@ export default function TambahMenu() {
                 type="number"
                 className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
                 placeholder="Masukkan harga pokok menu..."
+                value={hargaPokok}
+                onChange={(e) => setHargaPokok(e.target.value)}
               />
             </div>
             <div>
@@ -56,6 +135,8 @@ export default function TambahMenu() {
                 type="number"
                 className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
                 placeholder="Masukkan harga jual menu..."
+                value={hargaJual}
+                onChange={(e) => setHargaJual(e.target.value)}
               />
             </div>
           </div>
@@ -66,6 +147,8 @@ export default function TambahMenu() {
                 type="number"
                 className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
                 placeholder="Masukkan jumlah stok menu..."
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
               />
             </div>
             <div>
@@ -73,6 +156,7 @@ export default function TambahMenu() {
               <Input
                 type="file"
                 className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
+                onChange={(e) => setImagesUrl(e.target.files?.[0] || null)}
               />
             </div>
             <div>
@@ -88,11 +172,11 @@ export default function TambahMenu() {
 
           <div className="flex gap-x-2">
             <Button
-              type="button"
+              type="submit"
               variant="destructive"
               className="bg-green-700 hover:bg-green-600 duration-150 w-max text-neutral-50"
             >
-              Buat Menu Baru
+              {loading === true ? "Loading..." : "Buat Menu Baru"}
             </Button>
             <Link href="/menu">
               <Button

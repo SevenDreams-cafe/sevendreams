@@ -32,7 +32,7 @@ export default function DaftarMenu() {
             </div>
 
             <Link
-              href="menu/tambah-menu"
+              href="menu/create"
               className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 py-2.5 px-4 text-sm rounded-md"
             >
               Buat Menu Baru
