@@ -26,7 +26,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
     <aside
       className={`${
         openSide ? "-left-[280px]" : "left-0"
-      } bg-blue-600 fixed top-0 z-50 h-full w-[280px] transition-all`}
+      } bg-blue-600 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto`}
     >
       <div className="mx-5 mt-5">
         <Image
