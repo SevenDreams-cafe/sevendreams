@@ -32,8 +32,8 @@ export default function Cashier() {
     });
   }
   return (
-    <main className="ml-[280px] mt-28 flex gap-x-6">
-      <section className="ml-6 bg-neutral-50 rounded-md w-3/5 items-start">
+    <div className="flex gap-x-6">
+      <section className=" bg-neutral-50 rounded-md w-3/5 items-start">
         <div className="bg-blue-700 rounded-t-md py-3 px-4">
           <h2 className="font-bold text-neutral-50 text-lg">Kasir</h2>
         </div>
@@ -87,7 +87,7 @@ export default function Cashier() {
         </div>
       </section>
 
-      <section className="mr-6 bg-neutral-50 rounded-md w-2/5">
+      <section className="bg-neutral-50 rounded-md w-2/5">
         <form>
           <div className="bg-blue-700 rounded-t-md py-3 px-4">
             <h2 className="font-bold text-neutral-50 text-lg">Transaksi</h2>
@@ -235,6 +235,6 @@ export default function Cashier() {
           </div>
         </form>
       </section>
-    </main>
+    </div>
   );
 }

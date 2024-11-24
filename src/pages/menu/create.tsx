@@ -83,7 +83,7 @@ export default function TambahMenu() {
   }, []);
 
   return (
-    <main className="ml-[300px] mr-[20px] mt-[100px] shadow">
+    <>
       <section className="w-full p-8 bg-white rounded-md">
         <h2 className="text-lg font-bold">Tambah Menu</h2>
 
@@ -190,6 +190,6 @@ export default function TambahMenu() {
           </div>
         </form>
       </section>
-    </main>
+    </>
   );
 }

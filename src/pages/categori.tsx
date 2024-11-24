@@ -77,7 +77,7 @@ export default function Categori() {
   );
 
   return (
-    <main className="ml-[300px] mr-[20px] mt-[100px]">
+    <>
       {loading && <p>Loading...</p>}
       {!loading && (
         <section className="w-full p-8 bg-white rounded-md">
@@ -140,6 +140,6 @@ export default function Categori() {
           </div>
         </section>
       )}
-    </main>
+    </>
   );
 }
