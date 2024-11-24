@@ -29,35 +29,21 @@ export default function Categori() {
     setDataCategori((prevItems) => [...prevItems, item]);
   }
 
-  const fetchCategories = async () => {
-    const { data, error } = await supabase.from("tbl_categori").select("*");
-    if (error) {
-      console.error(error);
-      return;
-    }
-    setDataCategori(data || []);
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    async function fetchCategori() {
-      try {
-        const response = await fetch("/api/categori/getCategori");
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        const data = await response.json();
-        setDataCategori(data);
-      } catch (error) {
-        console.error("Error fetching items:", error);
-      } finally {
-        setLoading(false);
+  async function fetchCategori() {
+    try {
+      const response = await fetch("/api/categori/getCategori");
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
       }
+      const data = await response.json();
+      setDataCategori(data);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoading(false);
     }
-
+  }
+  useEffect(() => {
     fetchCategori();
   }, []);
 
@@ -91,7 +77,7 @@ export default function Categori() {
   );
 
   return (
-    <main className="ml-[300px] mr-[20px] mt-[100px]">
+    <>
       {loading && <p>Loading...</p>}
       {!loading && (
         <section className="w-full p-8 bg-white rounded-md">
@@ -130,13 +116,13 @@ export default function Categori() {
                         <EditCategoriDialog
                           categoryId={categori.id}
                           currentName={categori.name}
-                          onCategoryUpdated={fetchCategories}
+                          onCategoryUpdated={fetchCategori}
                         />
                         <span className="px-1.5">||</span>
                         <Button
                           variant="secondary"
                           type="button"
-                          className="w-auto bg-red-500 text-neutral-50 px-3 py-1.5 rounded-md"
+                          className="w-auto bg-red-500 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
                           onClick={() => handleDelete(categori.id)}
                         >
                           Delete
@@ -154,6 +140,6 @@ export default function Categori() {
           </div>
         </section>
       )}
-    </main>
+    </>
   );
 }

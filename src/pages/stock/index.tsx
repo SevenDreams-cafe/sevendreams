@@ -39,7 +39,7 @@ export default function DaftarMenu() {
 
   return (
     <>
-      <main className="ml-[300px] mr-[20px] mt-[100px]">
+      <>
         <section className="w-full p-8 bg-white rounded-md">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
@@ -109,7 +109,7 @@ export default function DaftarMenu() {
             </Table>
           </div>
         </section>
-      </main>
+      </>
 
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
         <DialogContent className="bg-neutral-50">

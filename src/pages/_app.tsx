@@ -11,6 +11,7 @@ import { Sidebar } from "@components/Sidebar";
 export default function App({ Component, pageProps }: AppProps) {
   // var elem = document.documentElement;
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [openSideBar, setOpenSideBar] = useState(false);
 
   async function toggleFullscreen() {
     try {
@@ -48,10 +49,16 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <Navbar />
-      <Sidebar />
+      <Navbar openSide={openSideBar} setOpenSide={setOpenSideBar} />
+      <Sidebar openSide={openSideBar} />
 
-      <Component {...pageProps} />
+      <main
+        className={`${
+          openSideBar ? "mx-5" : "ml-[300px] mr-[20px]"
+        } mt-[100px] transition-all`}
+      >
+        <Component {...pageProps} />
+      </main>
 
       {isFullscreen === false && (
         <button

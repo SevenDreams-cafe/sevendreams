@@ -51,7 +51,7 @@ export default function EdithMenu() {
   // async function fetchMenu(menuId: string) {
 
   return (
-    <main className="ml-[300px] mr-[20px] mt-[100px] shadow">
+    <>
       <section className="w-full p-8 bg-white rounded-md">
         <h2 className="text-lg font-bold">Edit Menu {id}</h2>
 
@@ -143,6 +143,6 @@ export default function EdithMenu() {
           </div>
         </form>
       </section>
-    </main>
+    </>
   );
 }

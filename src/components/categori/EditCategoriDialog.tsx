@@ -9,9 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@components/shadcn/Dialog";
-import { toast } from "react-hot-toast";
+
 import { FormEvent } from "react";
-import { supabase } from "@utils/supabase";
 
 interface UpdateCategoryDialogProps {
   categoryId: number;
@@ -29,33 +28,52 @@ export function EditCategoriDialog({
   const [name, setName] = useState(currentName);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   // setIsLoading(true);
+
+  //   // if (name.trim().length < 3) {
+  //   //   toast.error("Nama kategori harus minimal 3 karakter.");
+  //   //   // setIsLoading(false);
+  //   //   console.error("data kurang");
+  //   //   return;
+  //   // }
+
+  //   try {
+  //     const { error } = await supabase
+  //       .from("tbl_categori")
+  //       .update({ name })
+  //       .eq("id", categoryId);
+
+  //     if (error) throw error;
+
+  //     toast.success("Kategori berhasil diperbarui!");
+  //     onCategoryUpdated();
+  //     console.error("data ada");
+  //   } finally {
+  //     // setIsLoading(false);
+  //     setIsOpen(false);
+  //   }
+  // };
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // setIsLoading(true);
 
-    // if (name.trim().length < 3) {
-    //   toast.error("Nama kategori harus minimal 3 karakter.");
-    //   // setIsLoading(false);
-    //   console.error("data kurang");
-    //   return;
-    // }
+    const response = await fetch("/api/categori/editCategori", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: categoryId, name }),
+    });
 
-    try {
-      const { error } = await supabase
-        .from("tbl_categori")
-        .update({ name })
-        .eq("id", categoryId);
-
-      if (error) throw error;
-
-      toast.success("Kategori berhasil diperbarui!");
+    if (response.ok) {
       onCategoryUpdated();
-      console.error("data ada");
-    } finally {
-      // setIsLoading(false);
       setIsOpen(false);
+    } else {
+      console.log("Data Gagal Di Ubah");
     }
-  };
+  }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>

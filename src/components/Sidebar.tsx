@@ -15,11 +15,19 @@ import { FolderOpenIcon } from "./icons/FolderOpenIcon";
 import { GridIcon } from "./icons/GridIcon";
 import { UsersAltIcon } from "./icons/UsersAltIcon";
 
-export function Sidebar() {
+interface HamburgerProps {
+  openSide: boolean;
+}
+
+export function Sidebar({ openSide = false }: HamburgerProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="bg-blue-600 fixed top-0 z-50 h-full w-[280px]">
+    <aside
+      className={`${
+        openSide ? "-left-[280px]" : "left-0"
+      } bg-blue-600 fixed top-0 z-50 h-full w-[280px] transition-all`}
+    >
       <div className="mx-5 mt-5">
         <Image
           src={SevenDreamsImage}
