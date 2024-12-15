@@ -6,7 +6,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { data, error } = await supabase.from("tbl_menu").select("*");
+    const { data, error } = await supabase
+      .from("tbl_menu")
+      .select(
+        `id, name, harga_pokok, harga_jual, stock, image_url, tbl_categori( id, name )`
+      );
     if (error) throw error;
 
     res.status(200).json(data);

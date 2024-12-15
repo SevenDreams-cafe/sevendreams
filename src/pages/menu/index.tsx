@@ -20,17 +20,21 @@ import Swal from "sweetalert2";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
+interface CategoriProps {
+  id: number;
+  name: string;
+}
+
 interface MenuProps {
   id: number;
   name: string;
-  id_categori: number;
   harga_pokok: number;
   harga_jual: number;
   image_url: string;
+  tbl_categori: CategoriProps;
 }
 
 export default function DaftarMenu() {
-  // const [dataCategori, setDataCategori] = useState([]);
   const [dataMenu, setDataMenu] = useState<MenuProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -38,7 +42,7 @@ export default function DaftarMenu() {
 
   async function fetchMenu() {
     try {
-      const response = await fetch("/api/getMenu");
+      const response = await fetch("/api/menu/getMenu");
 
       if (!response.ok) {
         throw new Error("Failed to fetch categories");
@@ -96,8 +100,18 @@ export default function DaftarMenu() {
     fetchMenu();
   }, []);
 
-  const filteredMenu = dataMenu.filter((menu) =>
-    menu.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMenu = dataMenu.filter(
+    (menu) =>
+      menu.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      menu.harga_pokok
+        .toLocaleString()
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      menu.harga_jual
+        .toLocaleString()
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      menu.tbl_categori.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -167,11 +181,20 @@ export default function DaftarMenu() {
                     </TableCell>
                     <TableCell>{menu.id}</TableCell>
                     <TableCell className="capitalize">{menu.name}</TableCell>
-                    <TableCell>Nasi</TableCell>
-                    <TableCell>Rp. {menu.harga_pokok}</TableCell>
-                    <TableCell>Rp. {menu.harga_jual}</TableCell>
+                    <TableCell>{menu.tbl_categori.name}</TableCell>
+                    <TableCell>
+                      Rp. {menu.harga_pokok.toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                      Rp. {menu.harga_jual.toLocaleString()}
+                    </TableCell>
                     <TableCell className="text-center">
-                      <Link href={`/menu/edit?id=${menu.id}`}>
+                      <Link
+                        href={{
+                          pathname: "/menu/edit/[id]",
+                          query: { id: menu.id },
+                        }}
+                      >
                         <Button
                           variant="secondary"
                           type="button"
