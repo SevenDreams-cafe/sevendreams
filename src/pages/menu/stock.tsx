@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
 import {
@@ -20,22 +20,47 @@ import { dataMenu } from "@datas/dataMenu";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
+interface CategoriProps {
+  id: number;
+  name: string;
+}
+
+interface MenuProps {
+  id: number;
+  name: string;
+  minimum_stock: number;
+  quantity_stock: number;
+  tbl_categori: CategoriProps;
+}
+
 export default function DaftarMenu() {
-  const [addOpen, setAddOpen] = useState(false);
-  const [addStock, setAddStock] = useState({ id: "", name: "", stock: 0 });
+  const [stock, setStock] = useState<MenuProps[]>([]);
+  const [searchItem, setSearchItem] = useState("");
 
-  function handleAddStock(id: string, name: string, stock: number) {
-    setAddStock({ id, name, stock });
-    setAddOpen(true);
+  const [loading, setLoading] = useState(false);
+
+  async function fetchStock() {
+    try {
+      const response = await fetch("/api/menu/getMenu");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+
+      const stocks = await response.json();
+
+      setStock(stocks);
+      setLoading(true);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleStockChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setAddStock({
-      ...addStock,
-      name: e.target.value,
-      stock: Number(e.target.value),
-    });
-  }
+  useEffect(() => {
+    fetchStock();
+  }, []);
 
   return (
     <>
@@ -57,21 +82,17 @@ export default function DaftarMenu() {
                 <TableRow>
                   <TableHead className="w-[60px] text-center">#</TableHead>
 
-                  <TableHead className="w-[80px] text-center">
-                    Kode Menu
-                  </TableHead>
                   <TableHead className="w-[100px] text-center">
                     Nama Menu
                   </TableHead>
                   <TableHead className="w-[100px] text-center">
                     Kategori
                   </TableHead>
-                  <TableHead className="w-[80px] text-center">Stock</TableHead>
-                  <TableHead className="w-[100px] text-center">
-                    Harga Pokok
+                  <TableHead className="w-[80px] text-center">
+                    Quantity
                   </TableHead>
-                  <TableHead className="w-[100px] text-center">
-                    Harga Jual
+                  <TableHead className="w-[80px] text-center">
+                    Minimum
                   </TableHead>
                   <TableHead className="w-[120px] text-center">
                     Action
@@ -79,26 +100,21 @@ export default function DaftarMenu() {
                 </TableRow>
               </TableHeader>
               <TableBody className="text-center">
-                {dataMenu.map((menu, menuIndex) => (
+                {stock.map((item, itemIndex) => (
                   <TableRow
-                    key={`${menu.id}${menuIndex + 1}`}
-                    tabIndex={menuIndex}
+                    key={`${item.id}${itemIndex + 1}`}
+                    tabIndex={itemIndex}
                   >
-                    <TableCell>{menuIndex + 1}</TableCell>
-                    <TableCell>P0001</TableCell>
-                    <TableCell className="capitalize">{menu.name}</TableCell>
+                    <TableCell>{itemIndex + 1}</TableCell>
+                    <TableCell className="capitalize">{item.name}</TableCell>
                     <TableCell>Nasi</TableCell>
-                    <TableCell>{menu.stok}</TableCell>
-                    <TableCell>Rp. {menu.hargaPokok}</TableCell>
-                    <TableCell>Rp. {menu.hargaJual}</TableCell>
+                    <TableCell>{item.minimum_stock}</TableCell>
+                    <TableCell>{item.quantity_stock}</TableCell>
                     <TableCell className="text-center">
                       <Button
                         variant="secondary"
                         type="button"
                         className="w-auto bg-blue-600 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
-                        onClick={() =>
-                          handleAddStock(menu.id, menu.name, menu.stok)
-                        }
                       >
                         Add
                       </Button>
@@ -111,7 +127,7 @@ export default function DaftarMenu() {
         </section>
       </>
 
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+      {/* <Dialog open={addOpen} onOpenChange={setAddOpen}>
         <DialogContent className="bg-neutral-50">
           <DialogHeader>
             <DialogTitle>Tambah Jumlah Stok</DialogTitle>
@@ -142,7 +158,7 @@ export default function DaftarMenu() {
             </form>
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 }

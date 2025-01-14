@@ -19,7 +19,7 @@ export default async function handler(
     const { data, error } = await supabase
       .from("tbl_menu")
       .select(
-        `id, name, harga_pokok, harga_jual, stock, image_url, tbl_categori( id, name )`
+        `id, name, harga_pokok, harga_jual, image_url, tbl_categori( id, name )`
       )
       .eq("id", id)
       .single();
