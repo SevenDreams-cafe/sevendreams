@@ -88,7 +88,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
           } relative`}
         >
           <Link
-            href="/stock"
+            href="/menu/stock"
             className={`${
               pathname === "/stock" ? "font-semibold" : "font-normal"
             } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}

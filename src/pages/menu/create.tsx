@@ -26,7 +26,6 @@ export default function TambahMenu() {
   const [categoriID, setCategoriID] = useState("");
   const [hargaPokok, setHargaPokok] = useState("");
   const [hargaJual, setHargaJual] = useState("");
-  const [stock, setStock] = useState("");
   const [imagesUrl, setImagesUrl] = useState<File | null>(null);
 
   const [dataCategori, setDataCategori] = useState<DataCategoriProps[]>([]);
@@ -64,14 +63,14 @@ export default function TambahMenu() {
         id_categori: parseFloat(categoriID),
         harga_pokok: parseFloat(hargaPokok),
         harga_jual: parseFloat(hargaJual),
-        stock: parseInt(stock, 10),
+        minimum_stock: 0,
+        quantity_stock: 0,
         image_url: imageUrl,
       });
 
       setName("");
       setHargaPokok("");
       setHargaJual("");
-      setStock("");
     } finally {
       setImagesUrl(null);
       setLoading(false);
@@ -141,16 +140,6 @@ export default function TambahMenu() {
             </div>
           </div>
           <div className="flex flex-col gap-y-4">
-            <div>
-              <Label className="text-sm text-neutral-600">Stok Menu</Label>
-              <Input
-                type="number"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                placeholder="Masukkan jumlah stok menu..."
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-              />
-            </div>
             <div>
               <Label className="text-sm text-neutral-600">Gambar Menu</Label>
               <Input
