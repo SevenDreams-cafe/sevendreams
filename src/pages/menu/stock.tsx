@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@components/shadcn/Dialog";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+// } from "@components/shadcn/Dialog";
 import {
   Table,
   TableHead,
@@ -15,8 +15,6 @@ import {
   TableCell,
   TableRow,
 } from "@components/shadcn/Table";
-
-import { dataMenu } from "@datas/dataMenu";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
@@ -35,7 +33,7 @@ interface MenuProps {
 
 export default function DaftarMenu() {
   const [stock, setStock] = useState<MenuProps[]>([]);
-  const [searchItem, setSearchItem] = useState("");
+  // const [searchItem, setSearchItem] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -64,7 +62,9 @@ export default function DaftarMenu() {
 
   return (
     <>
-      <>
+      {loading ? (
+        "Loading"
+      ) : (
         <section className="w-full p-8 bg-white rounded-md">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
@@ -125,7 +125,7 @@ export default function DaftarMenu() {
             </Table>
           </div>
         </section>
-      </>
+      )}
 
       {/* <Dialog open={addOpen} onOpenChange={setAddOpen}>
         <DialogContent className="bg-neutral-50">
