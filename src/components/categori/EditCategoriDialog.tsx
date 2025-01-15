@@ -22,39 +22,10 @@ interface UpdateCategoryDialogProps {
 export function EditCategoriDialog({
   categoryId,
   currentName,
-  // currentDescription = "",
   onCategoryUpdated,
 }: UpdateCategoryDialogProps) {
   const [name, setName] = useState(currentName);
   const [isOpen, setIsOpen] = useState(false);
-
-  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   // setIsLoading(true);
-
-  //   // if (name.trim().length < 3) {
-  //   //   toast.error("Nama kategori harus minimal 3 karakter.");
-  //   //   // setIsLoading(false);
-  //   //   console.error("data kurang");
-  //   //   return;
-  //   // }
-
-  //   try {
-  //     const { error } = await supabase
-  //       .from("tbl_categori")
-  //       .update({ name })
-  //       .eq("id", categoryId);
-
-  //     if (error) throw error;
-
-  //     toast.success("Kategori berhasil diperbarui!");
-  //     onCategoryUpdated();
-  //     console.error("data ada");
-  //   } finally {
-  //     // setIsLoading(false);
-  //     setIsOpen(false);
-  //   }
-  // };
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
