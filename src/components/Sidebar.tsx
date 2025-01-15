@@ -83,14 +83,14 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
         </li>
         <li
           className={`${
-            pathname === "/stock" &&
+            pathname === "/menu/stock" &&
             "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
           } relative`}
         >
           <Link
             href="/menu/stock"
             className={`${
-              pathname === "/stock" ? "font-semibold" : "font-normal"
+              pathname === "/menu/stock" ? "font-semibold" : "font-normal"
             } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
           >
             <DollyFlatbedIcon className="w-5 h-5 fill-neutral-50" />

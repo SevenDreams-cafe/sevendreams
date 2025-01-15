@@ -33,6 +33,7 @@ export default function Cashier() {
   }
   return (
     <div className="flex gap-x-6">
+      {/* Bagian Menu Kasir */}
       <section className=" bg-neutral-50 rounded-md w-3/5 items-start">
         <div className="bg-blue-700 rounded-t-md py-3 px-4">
           <h2 className="font-bold text-neutral-50 text-lg">Kasir</h2>
@@ -87,6 +88,7 @@ export default function Cashier() {
         </div>
       </section>
 
+      {/* Bagian Cek Transaksi */}
       <section className="bg-neutral-50 rounded-md w-2/5">
         <form>
           <div className="bg-blue-700 rounded-t-md py-3 px-4">
