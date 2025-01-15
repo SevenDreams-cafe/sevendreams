@@ -51,7 +51,7 @@ export function EditCategoriDialog({
         <Button
           variant="secondary"
           type="button"
-          className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto rounded-md"
+          className="w-auto bg-yellow-400 text-xs md:text-sm text-neutral-950 px-3 py-1.5 h-auto rounded-md"
         >
           Edit
         </Button>
@@ -71,14 +71,14 @@ export function EditCategoriDialog({
             <div className="flex justify-end gap-x-3 items-center">
               <DialogClose
                 type="button"
-                className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-sm rounded-md"
+                className="border border-red-600 bg-red-600 hover:bg-red-500 text-xs sm:text-sm text-neutral-50 w-min py-2 px-4 rounded-md"
               >
                 Closed
               </DialogClose>
               <Button
                 type="submit"
                 variant="secondary"
-                className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min py-2"
+                className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-xs sm:text-sm text-neutral-50 w-min py-2"
               >
                 Edit Kategori Baru
               </Button>

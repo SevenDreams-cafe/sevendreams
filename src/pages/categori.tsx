@@ -102,7 +102,7 @@ export default function Categori() {
                   <TableRow className="text-center">
                     <TableHead className="w-[60px]">#</TableHead>
                     <TableHead className="w-[400px]">Nama Kategori</TableHead>
-                    <TableHead className="w-[120px] text-center">
+                    <TableHead className="lg:w-[120px] text-center">
                       Action
                     </TableHead>
                   </TableRow>
@@ -122,7 +122,7 @@ export default function Categori() {
                         <Button
                           variant="secondary"
                           type="button"
-                          className="w-auto bg-red-500 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
+                          className="w-auto bg-red-500 text-xs md:text-sm text-neutral-50 px-3 py-1.5 h-auto rounded-md"
                           onClick={() => handleDelete(categori.id)}
                         >
                           Delete

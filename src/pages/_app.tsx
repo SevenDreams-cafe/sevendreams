@@ -54,7 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <main
         className={`${
-          openSideBar ? "mx-5" : "ml-[300px] mr-[20px]"
+          openSideBar ? "mx-5" : "lg:ml-[300px] mx-5 lg:mr-[20px]"
         } mt-[100px] transition-all`}
       >
         <Component {...pageProps} />
