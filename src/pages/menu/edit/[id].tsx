@@ -129,7 +129,7 @@ export default function EdithMenu() {
 
   return (
     <>
-      <section className="w-full p-8 bg-white rounded-md">
+      <section className="w-full p-8 bg-white rounded-md mb-4">
         <h2 className="text-lg font-bold">Edit Menu </h2>
 
         <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
@@ -231,7 +231,7 @@ export default function EdithMenu() {
             <Button
               type="submit"
               variant="destructive"
-              className="bg-green-700 hover:bg-green-600 duration-150 w-max text-neutral-50"
+              className="bg-green-700 hover:bg-green-600 duration-150 w-max text-neutral-50 text-xs lg:text-sm"
             >
               {loading ? "Saving..." : "Save Changes"}
             </Button>
@@ -239,7 +239,7 @@ export default function EdithMenu() {
               <Button
                 type="button"
                 variant="destructive"
-                className="bg-red-700 hover:bg-red-600 duration-150 w-max text-neutral-50"
+                className="bg-red-700 hover:bg-red-600 duration-150 w-max text-neutral-50 text-xs lg:text-sm"
               >
                 Kembali
               </Button>

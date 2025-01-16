@@ -82,10 +82,10 @@ export default function DaftarMenu() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[60px] text-center">#</TableHead>
-                  <TableHead className="w-[100px] text-center">
+                  <TableHead className="w-fit lg:w-[200px] text-center">
                     Nama Menu
                   </TableHead>
-                  <TableHead className="w-[100px] text-center">
+                  <TableHead className="lg:w-[100px] text-center">
                     Kategori
                   </TableHead>
                   <TableHead className="w-[80px] text-center">

@@ -52,6 +52,13 @@ export default function App({ Component, pageProps }: AppProps) {
       <Navbar openSide={openSideBar} setOpenSide={setOpenSideBar} />
       <Sidebar openSide={openSideBar} />
 
+      {openSideBar && (
+        <button
+          onClick={() => setOpenSideBar(false)}
+          className={`bg-neutral-950/40 fixed animate-in inset-0 z-40`}
+        />
+      )}
+
       <main
         className={`${
           openSideBar ? "mx-5" : "lg:ml-[300px] mx-5 lg:mr-[20px]"

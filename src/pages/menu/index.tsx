@@ -134,7 +134,7 @@ export default function DaftarMenu() {
 
             <Link
               href="menu/create"
-              className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 py-2.5 px-4 text-sm rounded-md"
+              className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 py-2.5 px-4 text-xs lg:text-sm rounded-md"
             >
               Buat Menu Baru
             </Link>
@@ -143,24 +143,28 @@ export default function DaftarMenu() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[60px] text-center">#</TableHead>
-                  <TableHead className="w-[80px] text-center">Gambar</TableHead>
-                  <TableHead className="w-[80px] text-center">
+                  <TableHead className="w-[40px] lg:w-[60px] text-center">
+                    #
+                  </TableHead>
+                  <TableHead className="lg:w-[80px] text-center">
+                    Gambar
+                  </TableHead>
+                  <TableHead className="lg:w-[80px] text-center">
                     Kode Menu
                   </TableHead>
-                  <TableHead className="w-[100px] text-center">
+                  <TableHead className="lg:w-[100px] text-center">
                     Nama Menu
                   </TableHead>
-                  <TableHead className="w-[100px] text-center">
+                  <TableHead className="lg:w-[100px] text-center">
                     Kategori
                   </TableHead>
-                  <TableHead className="w-[100px] text-center">
+                  <TableHead className="lg:w-[100px] text-center">
                     Harga Pokok
                   </TableHead>
-                  <TableHead className="w-[100px] text-center">
+                  <TableHead className="lg:w-[100px] text-center">
                     Harga Jual
                   </TableHead>
-                  <TableHead className="w-[120px] text-center">
+                  <TableHead className="w-[14px] lg:w-[120px] text-center">
                     Action
                   </TableHead>
                 </TableRow>
@@ -176,7 +180,7 @@ export default function DaftarMenu() {
                       <img
                         src={menu.image_url}
                         alt={menu.name}
-                        className="object-cover"
+                        className="object-cover w-20 h-20"
                       />
                     </TableCell>
                     <TableCell>{menu.id}</TableCell>
@@ -198,7 +202,7 @@ export default function DaftarMenu() {
                         <Button
                           variant="secondary"
                           type="button"
-                          className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto rounded-md"
+                          className="w-auto bg-yellow-400 text-neutral-950 px-3 py-1.5 h-auto text-xs lg:text-sm rounded-md"
                         >
                           Edit
                         </Button>
@@ -207,7 +211,7 @@ export default function DaftarMenu() {
                       <Button
                         variant="secondary"
                         type="button"
-                        className="w-auto inline-block bg-red-500 text-neutral-50 px-3 py-1.5 h-auto rounded-md"
+                        className="w-auto inline-block bg-red-500 text-neutral-50 px-3 py-1.5 h-auto text-xs lg:text-sm rounded-md"
                         onClick={() => handleDelete(menu.id)}
                       >
                         Delete
