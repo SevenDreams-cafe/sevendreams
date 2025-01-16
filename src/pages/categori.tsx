@@ -14,11 +14,12 @@ import {
 
 import { CategoriProps } from "../types/categoris";
 
+import { supabase } from "@utils/supabase";
+import Swal from "sweetalert2";
+
 import { EditCategoriDialog } from "@components/categori/EditCategoriDialog";
 import { InsertCategori } from "@components/categori/InsertCategori";
 import { SearchIcon } from "@components/icons/SearchIcon";
-
-import { supabase } from "@utils/supabase";
 
 export default function Categori() {
   const [loading, setLoading] = useState(true);
@@ -48,28 +49,41 @@ export default function Categori() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    const confirmed = window.confirm(
-      "Apakah Anda yakin ingin menghapus kategori ini?"
-    );
-    if (!confirmed) return;
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      try {
+        if (result.isConfirmed) {
+          const { error } = await supabase
+            .from("tbl_categori")
+            .delete()
+            .eq("id", id);
 
-    try {
-      const { error } = await supabase
-        .from("tbl_categori")
-        .delete()
-        .eq("id", id);
+          if (error) {
+            throw error;
+          }
 
-      if (error) {
-        throw error;
+          // Hapus dari state lokal setelah berhasil dihapus dari Supabase
+          setDataCategori((prev) => prev.filter((item) => item.id !== id));
+
+          // Sweatalert ketika data sukses di hapus
+          Swal.fire({
+            title: `Success`,
+            text: "Your menu has been successfully deleted",
+            icon: "success",
+          });
+        }
+      } catch (error) {
+        console.error("Error deleting category:", error);
+        alert("Gagal menghapus kategori. Silakan coba lagi.");
       }
-
-      // Hapus dari state lokal setelah berhasil dihapus dari Supabase
-      setDataCategori((prev) => prev.filter((item) => item.id !== id));
-      alert("Kategori berhasil dihapus!");
-    } catch (error) {
-      console.error("Error deleting category:", error);
-      alert("Gagal menghapus kategori. Silakan coba lagi.");
-    }
+    });
   };
 
   const filteredCategori = dataCategori.filter((categori) =>
@@ -101,7 +115,9 @@ export default function Categori() {
                 <TableHeader>
                   <TableRow className="text-center">
                     <TableHead className="w-[60px]">#</TableHead>
-                    <TableHead className="w-[400px]">Nama Kategori</TableHead>
+                    <TableHead className="lg:w-[400px]">
+                      Nama Kategori
+                    </TableHead>
                     <TableHead className="lg:w-[120px] text-center">
                       Action
                     </TableHead>

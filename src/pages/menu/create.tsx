@@ -163,7 +163,7 @@ export default function TambahMenu() {
             <Button
               type="submit"
               variant="destructive"
-              className="bg-green-700 hover:bg-green-600 duration-150 w-max text-neutral-50"
+              className="bg-green-700 hover:bg-green-600 duration-150 w-max text-neutral-50 text-xs lg:text-sm"
             >
               {loading === true ? "Loading..." : "Buat Menu Baru"}
             </Button>
@@ -171,7 +171,7 @@ export default function TambahMenu() {
               <Button
                 type="button"
                 variant="destructive"
-                className="bg-red-700 hover:bg-red-600 duration-150 w-max text-neutral-50"
+                className="bg-red-700 hover:bg-red-600 duration-150 w-max text-neutral-50 text-xs lg:text-sm"
               >
                 Kembali
               </Button>

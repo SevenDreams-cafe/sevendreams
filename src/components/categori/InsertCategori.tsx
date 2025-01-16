@@ -52,15 +52,17 @@ export function InsertCategori({ onNewItem }: CategoriNewProps) {
         <Button
           type="button"
           variant="secondary"
-          className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50"
+          className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-xs md:text-sm text-neutral-50"
           onClick={() => setAddOpen(true)}
         >
           Buat Kategori Baru
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-neutral-50">
+      <DialogContent className="bg-white rounded-md">
         <DialogHeader>
-          <DialogTitle>Buat Kategori Baru</DialogTitle>
+          <DialogTitle className="text-lg lg:text-xl">
+            Buat Kategori Baru
+          </DialogTitle>
         </DialogHeader>
         <div className="mt-5">
           <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
@@ -73,14 +75,14 @@ export function InsertCategori({ onNewItem }: CategoriNewProps) {
             <div className="flex justify-end gap-x-3 items-center">
               <DialogClose
                 type="button"
-                className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-sm rounded-md"
+                className="border border-red-600 bg-red-600 hover:bg-red-500 text-neutral-50 w-min py-2 px-4 text-xs lg:text-sm rounded-md"
               >
                 Closed
               </DialogClose>
               <Button
                 type="submit"
                 variant="secondary"
-                className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min py-2"
+                className="border border-blue-600 bg-blue-600 hover:bg-blue-500 text-neutral-50 w-min text-xs lg:text-sm py-2"
               >
                 Buat Kategori Baru
               </Button>

@@ -21,7 +21,9 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
       className={`${karla.className} antialiased w-full fixed top-0 bg-white h-20 items-center flex justify-between pr-10`}
     >
       <button
-        className={`${openSide ? "ml-5" : "ml-[300px]"} transition-all`}
+        className={`${
+          openSide ? "ml-[300px] lg:ml-5" : "ml-5 lg:ml-[300px]"
+        } transition-all`}
         onClick={() => setOpenSide(!openSide)}
       >
         <HamburgerIcon className="w-3 h-3" />
