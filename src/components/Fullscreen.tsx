@@ -1,29 +1,48 @@
-import { useRef } from "react";
+import { useState, useEffect } from "react";
+
+import { OutscreenIcon } from "./icons/OutscreenIcon";
+import { ExpandIcon } from "./icons/ExpandIcon";
 
 export function Fullscreen() {
-  const elementRef = useRef<HTMLDivElement>(null);
+  const [fullscreen, setIsFullscreen] = useState(false);
 
-  const toggleFullscreen = () => {
-    if (elementRef.current) {
+  async function toggleFullscreen() {
+    try {
       if (!document.fullscreenElement) {
-        elementRef.current.requestFullscreen().catch((err) => {
-          console.error(
-            `Error attempting to enable fullscreen mode: ${err.message}`
-          );
-        });
-      } else {
-        document.exitFullscreen().catch((err) => {
-          console.error(
-            `Error attempting to exit fullscreen mode: ${err.message}`
-          );
-        });
+        await document.documentElement.requestFullscreen();
+        if (screen.orientation) {
+          await screen.orientation.lock("landscape");
+        }
+      } else if (document.exitFullscreen) {
+        await document.exitFullscreen();
+        if (screen.orientation) {
+          screen.orientation.unlock();
+        }
       }
+    } catch (error) {
+      console.error("Gagal mengubah ke mode fullscreen landscape:", error);
     }
-  };
+  }
+
+  useEffect(() => {
+    const onFullscreenChange = () =>
+      setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
   return (
-    <div ref={elementRef} className="absolute right-20">
-      <button onClick={toggleFullscreen}>Toggle Fullscreen</button>
-      <p>This content can go fullscreen.</p>
-    </div>
+    <>
+      {fullscreen === false ? (
+        <button type="button" onClick={toggleFullscreen}>
+          <ExpandIcon className="w-[18px] h-full" />
+        </button>
+      ) : (
+        <button type="button" onClick={toggleFullscreen}>
+          <OutscreenIcon className="w-[18px] h-full" />
+        </button>
+      )}
+    </>
   );
 }

@@ -12,30 +12,20 @@ import {
   TableRow,
 } from "@components/shadcn/Table";
 
+import Swal from "sweetalert2";
 import { supabase } from "@utils/supabase";
 
-import Swal from "sweetalert2";
-
-// import { dataMenu } from "@datas/dataMenu";
+import { CategoriProps } from "@type/categoris";
+import { MenuProps } from "@type/menu";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
-interface CategoriProps {
-  id: number;
-  name: string;
-}
-
-interface MenuProps {
-  id: number;
-  name: string;
-  harga_pokok: number;
-  harga_jual: number;
-  image_url: string;
+interface DaftarMenuProps extends MenuProps {
   tbl_categori: CategoriProps;
 }
 
 export default function DaftarMenu() {
-  const [dataMenu, setDataMenu] = useState<MenuProps[]>([]);
+  const [dataMenu, setDataMenu] = useState<DaftarMenuProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const [loading, setLoading] = useState(false);

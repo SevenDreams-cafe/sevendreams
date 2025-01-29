@@ -1,4 +1,4 @@
-import { cn } from "@libs/shadcn";
+import { cn } from "src/libs/shadcn";
 import { forwardRef, type InputHTMLAttributes } from "react";
 
 const Input = forwardRef<

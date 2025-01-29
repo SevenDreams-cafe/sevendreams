@@ -2,7 +2,7 @@ import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { AngleSmallDownIcon } from "@components/icons/AngleSmallDownIcon";
 
-import { cn } from "@libs/shadcn";
+import { cn } from "src/libs/shadcn";
 
 const Accordion = AccordionPrimitive.Root;
 

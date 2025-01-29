@@ -1,7 +1,7 @@
 import * as React from "react";
 import { forwardRef, type TextareaHTMLAttributes } from "react";
 
-import { cn } from "@libs/shadcn";
+import { cn } from "src/libs/shadcn";
 
 const Textarea = forwardRef<
   HTMLTextAreaElement,
