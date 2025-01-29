@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-import { cn } from "@libs/shadcn";
+import { cn } from "src/libs/shadcn";
 
 const Select = SelectPrimitive.Root;
 

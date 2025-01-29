@@ -2,7 +2,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "@components/icons/XIcon";
 
-import { cn } from "@libs/shadcn";
+import { cn } from "src/libs/shadcn";
 
 const Dialog = DialogPrimitive.Root;
 

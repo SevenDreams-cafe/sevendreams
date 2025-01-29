@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Head from "next/head";
 
@@ -9,35 +9,8 @@ import { Navbar } from "@components/Navbar";
 import { Sidebar } from "@components/Sidebar";
 
 export default function App({ Component, pageProps }: AppProps) {
-  // var elem = document.documentElement;
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
 
-  async function toggleFullscreen() {
-    try {
-      if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
-        if (screen.orientation) {
-          await screen.orientation.lock("landscape");
-        }
-      } else if (document.exitFullscreen) {
-        await document.exitFullscreen();
-        if (screen.orientation) {
-          screen.orientation.unlock();
-        }
-      }
-    } catch (error) {
-      console.error("Gagal mengubah ke mode fullscreen landscape:", error);
-    }
-  }
-
-  useEffect(() => {
-    const onFullscreenChange = () =>
-      setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", onFullscreenChange);
-    return () =>
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
-  }, []);
   return (
     <>
       <Head>
@@ -66,16 +39,6 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <Component {...pageProps} />
       </main>
-
-      {isFullscreen === false && (
-        <button
-          type="button"
-          onClick={toggleFullscreen}
-          className="fixed right-20 bottom-10 "
-        >
-          Toggle
-        </button>
-      )}
     </>
   );
 }

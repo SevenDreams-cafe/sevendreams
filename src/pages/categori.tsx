@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@components/shadcn/Table";
 
-import { CategoriProps } from "../types/categoris";
+import { CategoriProps } from "@type/categoris";
 
 import { supabase } from "@utils/supabase";
 import Swal from "sweetalert2";

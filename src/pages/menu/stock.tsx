@@ -9,27 +9,22 @@ import {
   TableRow,
 } from "@components/shadcn/Table";
 
+import type { CategoriProps } from "@type/categoris";
+import type { MenuProps } from "@type/menu";
+
 import { AddStockDialog } from "@components/AddStockDialog";
 
 import { SearchIcon } from "@components/icons/SearchIcon";
 
-interface CategoriProps {
-  id: number;
-  name: string;
-}
-
-interface MenuProps {
-  id: number;
-  name: string;
-  minimum_stock: number;
-  quantity_stock: number;
+interface StockProps extends MenuProps {
   tbl_categori: CategoriProps;
 }
 
-export default function DaftarMenu() {
-  const [dataMenu, setMenu] = useState<MenuProps[]>([]);
+export default function Stock() {
+  const [dataMenu, setMenu] = useState<StockProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [searchStock, setSearchStock] = useState("");
 
   async function fetchStock() {
     try {
@@ -54,7 +49,20 @@ export default function DaftarMenu() {
     fetchStock();
   }, []);
 
-  // Tambah Stock Makanan
+  // Searching Stock
+  const filteredStock = dataMenu.filter(
+    (menu) =>
+      menu.name.toLowerCase().includes(searchStock.toLowerCase()) ||
+      menu.quantity_stock
+        .toLocaleString()
+        .toLowerCase()
+        .includes(searchStock.toLowerCase()) ||
+      menu.minimum_stock
+        .toLocaleString()
+        .toLowerCase()
+        .includes(searchStock.toLowerCase()) ||
+      menu.tbl_categori.name.includes(searchStock)
+  );
 
   return (
     <>
@@ -68,6 +76,8 @@ export default function DaftarMenu() {
                 type="text"
                 className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-neutral-200 bg-neutral-50 w-full pl-8"
                 placeholder="Search..."
+                value={searchStock}
+                onChange={(e) => setSearchStock(e.target.value)}
               />
               <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-neutral-700" />
             </div>
@@ -100,14 +110,14 @@ export default function DaftarMenu() {
                 </TableRow>
               </TableHeader>
               <TableBody className="text-center">
-                {dataMenu.map((menu, menuIndex) => (
+                {filteredStock.map((menu, menuIndex) => (
                   <TableRow
                     key={`${menu.id}${menuIndex + 1}`}
                     tabIndex={menuIndex}
                   >
                     <TableCell>{menuIndex + 1}</TableCell>
                     <TableCell className="capitalize">{menu.name}</TableCell>
-                    <TableCell>Nasi</TableCell>
+                    <TableCell>{menu.tbl_categori.name}</TableCell>
                     <TableCell>{menu.minimum_stock}</TableCell>
                     <TableCell>{menu.quantity_stock}</TableCell>
                     <TableCell className="text-center">
