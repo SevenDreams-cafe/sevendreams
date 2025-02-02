@@ -1,3 +1,4 @@
+import { Dispatch, type SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,15 +18,16 @@ import { UsersAltIcon } from "./icons/UsersAltIcon";
 
 interface HamburgerProps {
   openSide: boolean;
+  setOpenSide: Dispatch<SetStateAction<boolean>>;
 }
 
-export function Sidebar({ openSide = false }: HamburgerProps) {
+export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
   const pathname = usePathname();
 
   return (
     <aside
       className={`${
-        openSide ? "left-0 lg:-left-[280px]" : "-left-[280px] lg:left-0"
+        openSide ? "left-0 xl:-left-[280px]" : "-left-[280px] xl:left-0"
       } bg-blue-600 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto text-sm lg:text-base`}
     >
       <div className="mx-5 mt-5">
@@ -44,6 +46,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
           } relative`}
         >
           <Link
+            onClick={() => setOpenSide(false)}
             href="/"
             className={`${
               pathname === "/" ? "font-semibold" : "font-normal"
@@ -62,6 +65,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
               </AccordionTrigger>
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
                 <Link
+                  onClick={() => setOpenSide(false)}
                   href="/categori"
                   className={`${
                     pathname === "/categori" ? "font-semibold" : "font-normal"
@@ -70,6 +74,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
                   Kategori
                 </Link>
                 <Link
+                  onClick={() => setOpenSide(false)}
                   href="/menu"
                   className={`${
                     pathname === "/menu" ? "font-semibold" : "font-normal"
@@ -88,6 +93,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
           } relative`}
         >
           <Link
+            onClick={() => setOpenSide(false)}
             href="/menu/stock"
             className={`${
               pathname === "/menu/stock" ? "font-semibold" : "font-normal"
@@ -104,6 +110,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
           } relative`}
         >
           <Link
+            onClick={() => setOpenSide(false)}
             href="/cashier"
             className={`${
               pathname === "/cashier" ? "font-semibold" : "font-normal"
@@ -122,6 +129,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
               </AccordionTrigger>
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
                 <Link
+                  onClick={() => setOpenSide(false)}
                   href=""
                   className={`${
                     pathname === "/transaksi" ? "font-semibold" : "font-normal"
@@ -130,6 +138,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
                   Transaksi Penjualan
                 </Link>
                 <Link
+                  onClick={() => setOpenSide(false)}
                   href=""
                   className={`${
                     pathname === "/history-menu"
@@ -140,6 +149,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
                   History Per Menu
                 </Link>
                 <Link
+                  onClick={() => setOpenSide(false)}
                   href=""
                   className={`${
                     pathname === "/cash-flow" ? "font-semibold" : "font-normal"
@@ -158,6 +168,7 @@ export function Sidebar({ openSide = false }: HamburgerProps) {
           } relative`}
         >
           <Link
+            onClick={() => setOpenSide(false)}
             href="/management-users"
             className={`${
               pathname === "/management-users" ? "font-semibold" : "font-normal"
