@@ -56,7 +56,10 @@ export function EditCategoriDialog({
           Edit
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-neutral-50">
+      <DialogContent
+        className="bg-neutral-50"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Edit Kategori Baru {categoryId}</DialogTitle>
         </DialogHeader>

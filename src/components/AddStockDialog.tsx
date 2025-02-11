@@ -66,7 +66,10 @@ export function AddStockDialog({
           Add
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-neutral-50">
+      <DialogContent
+        className="bg-neutral-50"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Tambah Stock Menu</DialogTitle>
         </DialogHeader>

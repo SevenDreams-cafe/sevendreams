@@ -164,6 +164,7 @@ export default function DaftarMenu() {
                   <TableRow
                     key={`${menu.id}${menuIndex + 1}`}
                     tabIndex={menuIndex}
+                    className="even:bg-neutral-100"
                   >
                     <TableCell>{menuIndex + 1}</TableCell>
                     <TableCell className="">

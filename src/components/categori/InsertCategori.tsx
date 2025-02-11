@@ -58,7 +58,10 @@ export function InsertCategori({ onNewItem }: CategoriNewProps) {
           Buat Kategori Baru
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white rounded-md">
+      <DialogContent
+        className="bg-white rounded-md"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="text-lg lg:text-xl">
             Buat Kategori Baru

@@ -125,7 +125,11 @@ export default function Categori() {
                 </TableHeader>
                 <TableBody>
                   {filteredCategori.map((categori, index) => (
-                    <TableRow key={categori.id} tabIndex={index}>
+                    <TableRow
+                      key={categori.id}
+                      tabIndex={index}
+                      className="even:bg-neutral-100"
+                    >
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>{categori.name}</TableCell>
                       <TableCell className="text-center">

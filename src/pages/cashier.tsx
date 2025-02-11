@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
 import { Label } from "@components/shadcn/Label";
@@ -12,6 +12,7 @@ import {
 } from "@components/shadcn/Select";
 
 import { MenuProps } from "@type/menu";
+import { supabase } from "@utils/supabase";
 
 import { MenuComponent } from "@components/MenuComponent";
 
@@ -42,6 +43,9 @@ export default function Cashier() {
   );
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Form Input
+  const [isBayar, setBayar] = useState(0);
 
   // Fetching Kategori
   async function fetchCategori() {
@@ -98,6 +102,53 @@ export default function Cashier() {
     return search && isInCategory;
   });
 
+  const checkoutTransaksi = dataTransaksi.reduce(
+    (acc, item) => acc + item.harga * item.jumlah,
+    0
+  );
+
+  function uangPas() {
+    setBayar(checkoutTransaksi);
+  }
+
+  // Menambah Transaksi
+  async function handleTransaksi(e: FormEvent) {
+    e.preventDefault();
+
+    const kembalian = isBayar - checkoutTransaksi;
+
+    try {
+      const { error } = await supabase.from("tbl_transaksi").insert([
+        {
+          grand_total: checkoutTransaksi,
+          dibayar: isBayar,
+          kembalian,
+        },
+      ]);
+
+      if (error) throw error;
+
+      const transaksiDetail = dataTransaksi.map((item, itemIndex) => ({
+        id_transaksi: itemIndex + 1,
+        id_menu: item.id,
+        jumlah: item.jumlah,
+        harga: item.harga,
+      }));
+
+      const { error: detailError } = await supabase
+        .from("tbl_transaksi_detail")
+        .insert(transaksiDetail);
+      if (detailError) throw detailError;
+
+      alert("Transaksi berhasil disimpan!");
+      setDataTransaksi([]);
+      setBayar(0);
+    } catch (error) {
+      console.error("Error saat menyimpan transaksi:", error);
+      alert("Gagal menyimpan transaksi");
+    }
+  }
+
   return (
     <>
       {loading ? (
@@ -143,7 +194,7 @@ export default function Cashier() {
                 </div>
               </div>
 
-              <div className="grid  grid-cols-4 gap-2 mt-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-6">
                 {filteredMenu.map((menu, menuIndex) => (
                   <MenuComponent
                     key={menuIndex}
@@ -161,7 +212,7 @@ export default function Cashier() {
 
           {/* Bagian Cek Transaksi */}
           <section className="bg-neutral-50 rounded-md lg:w-2/5">
-            <form>
+            <form onSubmit={(e) => handleTransaksi(e)}>
               <div className="bg-blue-700 rounded-t-md py-3 px-4">
                 <h2 className="font-bold text-neutral-50 text-lg">Transaksi</h2>
               </div>
@@ -263,9 +314,9 @@ export default function Cashier() {
                 </div>
               </div>
 
-              <div className="grid px-4 pb-4">
+              <div className="grid px-4 pb-4 text-sm">
                 <table>
-                  <tbody className="text-sm">
+                  <tbody>
                     <tr>
                       <td>Sub Total</td>
                       <td className=" pb-1">
@@ -275,25 +326,7 @@ export default function Cashier() {
                           </span>
                           <input
                             type="text"
-                            value={dataTransaksi.reduce(
-                              (acc, item) => acc + item.harga,
-                              0
-                            )}
-                            className="w-full py-1.5 pl-12 pr-4 border border-neutral-300 text-start justify-start flex outline-none rounded-md"
-                            disabled
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>PPN (0%)</td>
-                      <td className=" pb-1">
-                        <div className="relative">
-                          <span className="w-10 font-bold text-neutral-700 h-full absolute bg-neutral-300 rounded-l-md flex items-center justify-center">
-                            %
-                          </span>
-                          <input
-                            type="number"
+                            value={checkoutTransaksi}
                             className="w-full py-1.5 pl-12 pr-4 border border-neutral-300 text-start justify-start flex outline-none rounded-md"
                             disabled
                           />
@@ -317,33 +350,93 @@ export default function Cashier() {
                       </td>
                     </tr>
                     <tr className="font-bold">
-                      <td>Total</td>
-                      <td className="">
+                      <td>Grand Total</td>
+                      <td className=" pb-1">
                         <div className="relative">
                           <span className="w-10 font-bold text-neutral-700 h-full absolute bg-neutral-300 rounded-l-md flex items-center justify-center">
                             Rp
                           </span>
                           <input
                             type="text"
-                            value={dataTransaksi.reduce(
-                              (acc, item) => acc + item.harga * item.jumlah,
-                              0
-                            )}
+                            value={checkoutTransaksi}
                             className="w-full py-1.5 pl-12 pr-4 border border-neutral-300 text-start justify-start flex outline-none rounded-md"
                             disabled
                           />
                         </div>
                       </td>
                     </tr>
+                    {dataTransaksi.length !== 0 && (
+                      <>
+                        <tr>
+                          <td>Dibayar</td>
+                          <td className=" pb-1">
+                            <div className="relative">
+                              <span className="w-10 font-bold text-neutral-700 h-full absolute bg-neutral-300 rounded-l-md flex items-center justify-center">
+                                Rp
+                              </span>
+                              <input
+                                type="number"
+                                value={isBayar === 0 ? "" : isBayar}
+                                onChange={(e) =>
+                                  setBayar(Number(e.target.value))
+                                }
+                                className="w-full py-1.5 pl-12 pr-4 border border-neutral-300 text-start justify-start flex outline-none rounded-md"
+                                placeholder="Pembayaran..."
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                        <tr className="font-bold">
+                          <td>Kembalian</td>
+                          <td className="">
+                            <div className="relative">
+                              <span className="w-10 font-bold text-neutral-700 h-full absolute bg-neutral-300 rounded-l-md flex items-center justify-center">
+                                Rp
+                              </span>
+                              <input
+                                type="text"
+                                value={isBayar - checkoutTransaksi}
+                                className="w-full py-1.5 pl-12 pr-4 border border-neutral-300 text-start justify-start flex outline-none rounded-md"
+                                disabled
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
               </div>
 
               <div className="px-2 pb-3">
+                {dataTransaksi.length !== 0 && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="bg-green-700 hover:bg-green-600 duration-150 w-full py-2 px-2 text-sm h-auto text-neutral-50 mb-2"
+                    onClick={uangPas}
+                    disabled={
+                      checkoutTransaksi === isBayar
+                        ? true
+                        : isBayar > checkoutTransaksi
+                        ? true
+                        : false
+                    }
+                  >
+                    Uang Pas
+                  </Button>
+                )}
                 <Button
-                  type="button"
+                  type="submit"
                   variant="destructive"
-                  className="bg-green-700 hover:bg-green-600 duration-150 w-full py-2 px-2 text-sm h-auto text-neutral-50"
+                  className="bg-blue-700 hover:bg-blue-600 duration-150 w-full py-2 px-2 text-sm h-auto text-neutral-50"
+                  disabled={
+                    checkoutTransaksi === 0
+                      ? true
+                      : checkoutTransaksi > isBayar
+                      ? true
+                      : false
+                  }
                 >
                   Transaksi
                 </Button>
