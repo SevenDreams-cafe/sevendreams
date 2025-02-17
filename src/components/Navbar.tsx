@@ -7,7 +7,6 @@ import { Fullscreen } from "./Fullscreen";
 import { useWindowSize } from "@hooks/useWindowSize";
 
 import { AngleSmallDownIcon } from "./icons/AngleSmallDownIcon";
-
 import { HamburgerIcon } from "./icons/HamburgerIcon";
 
 export const karla = Karla({
@@ -15,11 +14,16 @@ export const karla = Karla({
 });
 
 interface HamburgerProps {
+  userEmail: string;
   openSide: boolean;
   setOpenSide: Dispatch<SetStateAction<boolean>>;
 }
 
-export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
+export function Navbar({
+  userEmail,
+  openSide = false,
+  setOpenSide,
+}: HamburgerProps) {
   const breakpoint = useWindowSize();
 
   return (
@@ -45,7 +49,7 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
               />
             </div>
             <div className="text-start">
-              <h5 className="font-semibold text-base">Anshari</h5>
+              <h5 className="font-semibold text-base">{userEmail}</h5>
               <h6 className="font-normal text-sm -mt-0.5">Administrator</h6>
             </div>
           </div>

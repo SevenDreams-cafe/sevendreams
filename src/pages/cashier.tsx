@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
 import { Label } from "@components/shadcn/Label";
@@ -15,7 +16,6 @@ import { MenuProps } from "@type/menu";
 import { supabase } from "@utils/supabase";
 
 import { MenuComponent } from "@components/MenuComponent";
-
 import { SearchIcon } from "@components/icons/SearchIcon";
 
 interface TransaksiProps {
@@ -35,6 +35,7 @@ interface DaftarMenuProps extends MenuProps {
 }
 
 export default function Cashier() {
+  const router = useRouter();
   const [dataTransaksi, setDataTransaksi] = useState<TransaksiProps[]>([]);
   const [dataCategori, setDataCategori] = useState<DataCategoriProps[]>([]);
   const [dataMenu, setDataMenu] = useState<DaftarMenuProps[]>([]);
@@ -45,33 +46,31 @@ export default function Cashier() {
   const [searchTerm, setSearchTerm] = useState("");
 
   // Form Input
+  const [customers, setCustomers] = useState("");
   const [isBayar, setBayar] = useState(0);
 
   // Fetching Kategori
   async function fetchCategori() {
-    const response = await fetch("/api/categori/getCategori");
-    if (!response.ok) {
-      throw new Error("Failed to fetch categories");
+    try {
+      const response = await fetch("/api/categori/getCategori");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+
+      const data: DataCategoriProps[] = await response.json();
+      setDataCategori(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
-    const data = await response.json();
-    setDataCategori(data);
   }
 
-  // Fetch Menu
   async function fetchMenu() {
     try {
       const response = await fetch("/api/menu/getMenu");
+      if (!response.ok) throw new Error("Failed to fetch menu");
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories");
-      }
-
-      const menus = await response.json();
-
+      const menus: DaftarMenuProps[] = await response.json();
       setDataMenu(menus);
-      setLoading(true);
     } catch (error) {
-      console.error("Error fetching items:", error);
+      console.error("Error fetching menu:", error);
     } finally {
       setLoading(false);
     }
@@ -83,24 +82,17 @@ export default function Cashier() {
   }, []);
 
   // Filter Menu atau Search Menu
-  const filteredMenu = dataMenu.filter((menu) => {
-    const search =
-      menu.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      menu.harga_pokok
-        .toLocaleString()
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      menu.harga_jual
-        .toLocaleString()
+  const filteredMenu = useMemo(() => {
+    return dataMenu.filter((menu) => {
+      const searchMatch = menu.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
-
-    const isInCategory =
-      selectedCategory === "Semua Kategori" ||
-      menu.tbl_categori.name === selectedCategory;
-
-    return search && isInCategory;
-  });
+      const categoryMatch =
+        selectedCategory === "Semua Kategori" ||
+        menu.tbl_categori.name === selectedCategory;
+      return searchMatch && categoryMatch;
+    });
+  }, [dataMenu, searchTerm, selectedCategory]);
 
   const checkoutTransaksi = dataTransaksi.reduce(
     (acc, item) => acc + item.harga * item.jumlah,
@@ -123,6 +115,7 @@ export default function Cashier() {
           grand_total: checkoutTransaksi,
           dibayar: isBayar,
           kembalian,
+          customers: customers,
         },
       ]);
 
@@ -140,7 +133,12 @@ export default function Cashier() {
         .insert(transaksiDetail);
       if (detailError) throw detailError;
 
-      alert("Transaksi berhasil disimpan!");
+      // Encode data transaksi untuk dikirim ke halaman cetak struk
+      const encodedData = encodeURIComponent(JSON.stringify(dataTransaksi));
+      router.push(
+        `/cetak-struk?data=${encodedData}&dibayar=${isBayar}&kembalian=${kembalian}&customers=${customers}`
+      );
+
       setDataTransaksi([]);
       setBayar(0);
     } catch (error) {
@@ -226,6 +224,9 @@ export default function Cashier() {
                     type="text"
                     className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-1 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600 h-auto py-2"
                     placeholder="Masukkan nama customer..."
+                    value={customers}
+                    onChange={(e) => setCustomers(e.target.value)}
+                    required
                   />
                 </div>
 
