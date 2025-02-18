@@ -1,3 +1,5 @@
+import { Aboreto } from "next/font/google";
+
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -7,6 +9,8 @@ interface CartItem {
   harga: number;
   jumlah: number;
 }
+
+const ars_one_sans = Aboreto({ subsets: ["latin"], weight: "400" });
 
 export default function CetakStruk() {
   const searchParams = useSearchParams();
@@ -54,24 +58,13 @@ export default function CetakStruk() {
     }
 
     // Jika perangkat mobile atau tablet, cetak otomatis setelah delay
-    if (/mobi|android/i.test(userAgent) || (width >= 768 && width <= 1024)) {
-      setTimeout(() => {
-        window.print();
-      }, 1000);
-    }
-
-    // Event listener untuk kembali ke halaman transaksi setelah cetak
-    const handleAfterPrint = () => {
-      if (deviceType === "desktop") {
-        router.push("/cashier");
+    if (deviceType !== "desktop") {
+      if (/mobi|android/i.test(userAgent) || (width >= 768 && width <= 1024)) {
+        setTimeout(() => {
+          window.print();
+        }, 1000);
       }
-    };
-
-    window.addEventListener("afterprint", handleAfterPrint);
-
-    return () => {
-      window.removeEventListener("afterprint", handleAfterPrint);
-    };
+    }
   }, [searchParams, router]);
 
   const Dates = new Date().getDate();
@@ -79,55 +72,53 @@ export default function CetakStruk() {
   const Years = new Date().getFullYear();
   const Hours = new Date().getHours();
   const Minutes = new Date().getMinutes();
-  const Seconds = new Date().getSeconds();
 
   return (
-    <div className="px-6 text-center mt-10">
-      <div className="flex gap-x-1 justify-end mb-2">
+    <div
+      className={`px-6 text-center mt-10 w-[30%] print:w-full mx-auto text-xs ${ars_one_sans.className}`}
+    >
+      <div className="flex gap-x-1 justify-end mb-4 ">
         <span>
           {Dates} - {Month} - {Years}
         </span>
         <span>
-          {Hours}:{Minutes}:{Seconds}
+          {Hours}:{Minutes}
         </span>
       </div>
-      <h1 className="text-2xl font-bold mb-4 uppercase">SevenDreams</h1>
-      <p className="text-sm text-center uppercase">
+      <h1 className="text-base font-bold mb-4 uppercase">SevenDreams</h1>
+      <p className=" text-center uppercase">
         JL. Kompleks YPPKG Blok. K3 A No 39, Paccerakkang, Kec. Biringkanayya
         90421
       </p>
 
-      <div className="flex flex-col gap-y-2 mt-6">
-        <div className="flex text-sm justify-between">
+      <div className="flex flex-col gap-y-2 mt-6 ">
+        <div className="flex  justify-between">
           <p>Customer</p>
           <p>{customers}</p>
         </div>
-        <div className="flex text-sm justify-between">
+        <div className="flex  justify-between">
           <p>Trace Number</p>
           <p>00000</p>
         </div>
-        <div className="flex text-sm justify-between">
+        <div className="flex  justify-between">
           <p>Payment Method</p>
           <p>Cash</p>
         </div>
-        <div className="flex text-sm justify-between">
+        <div className="flex  justify-between">
           <p>Cashier</p>
           <p>SEVEN DREAMS</p>
         </div>
-        <div className="flex text-sm justify-between">
+        <div className="flex  justify-between">
           <p>Status</p>
           <p>Paid</p>
         </div>
-
         <hr className="border-black border border-dashed w-full my-4" />
-
-        <ul className="flex flex-col gap-y-2 list-disc ml-5 text-sm">
+        <ul className="flex flex-col gap-y-2 list-disc ml-5 ">
           {cart.map((transaksi, transaksiIndex) => (
             <li key={transaksiIndex + 1}>
               <ul>
                 <li className="flex justify-between items-start text-start">
                   <h6 className="font-bold">{transaksi.name}</h6>
-                  <h6>Rp. {transaksi.harga.toLocaleString()}</h6>
                 </li>
                 <li className="flex justify-between items-start text-start">
                   <div className="flex gap-x-2">
@@ -142,30 +133,34 @@ export default function CetakStruk() {
             </li>
           ))}
         </ul>
-
         <hr className="border-black border border-dashed w-full my-4" />
-
-        <div className="flex text-base justify-between font-extrabold">
+        <div className="flex  justify-between font-extrabold">
           <p>SubTotal ({cart.length} Items)</p>
           <p>Rp {total.toLocaleString()}</p>
         </div>
-        <div className="flex text-sm justify-between">
+        <div className="flex  justify-between">
           <p>Cash</p>
           <p>Rp {bayar.toLocaleString()}</p>
         </div>
-        <div className="flex text-sm justify-between">
+        <div className="flex  justify-between">
           <p>Change</p>
           <p>Rp {kembalian.toLocaleString()}</p>
         </div>
       </div>
 
-      <p className="text-center text-sm font-semibold mt-10">
-        Terima Kasih Telah Memesan Menu Kami
+      <p className="text-center  font-semibold mt-10">
+        Terima Kasih Atas Kunjungan Anda
       </p>
 
       {/* Tombol Cetak */}
       <button
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 print:hidden"
+        className="mt-4 bg-red-600 text-white px-3 py-2  rounded-md hover:bg-red-500 print:hidden mr-2"
+        onClick={() => router.back()}
+      >
+        Kembali
+      </button>
+      <button
+        className="mt-4 bg-blue-600 text-white px-3 py-2  rounded-md hover:bg-blue-500 print:hidden"
         onClick={() => window.print()}
       >
         Cetak Struk
