@@ -2,6 +2,10 @@ import { Aboreto } from "next/font/google";
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import {
+  connectToBluetoothPrinter,
+  printReceipt,
+} from "@utils/bluetoothPrinter";
 
 interface CartItem {
   id: number;
@@ -20,9 +24,10 @@ export default function CetakStruk() {
   const [bayar, setBayar] = useState(0);
   const [kembalian, setKembalian] = useState(0);
   const [customers, setCustomers] = useState("");
-  const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">(
-    "desktop"
-  );
+  // const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">(
+  //   "desktop"
+  // );
+  const [printer, setPrinter] = useState<BluetoothDevice | null>(null);
 
   useEffect(() => {
     const cartData = searchParams.get("data");
@@ -45,27 +50,40 @@ export default function CetakStruk() {
     if (bayarData) setBayar(Number(bayarData));
     if (kembalianData) setKembalian(Number(kembalianData));
 
-    // Deteksi apakah perangkat adalah mobile, tablet, atau desktop
-    const userAgent = navigator.userAgent.toLowerCase();
-    const width = window.innerWidth;
+    // // Deteksi apakah perangkat adalah mobile, tablet, atau desktop
+    // const userAgent = navigator.userAgent.toLowerCase();
+    // const width = window.innerWidth;
 
-    if (/mobi|android/i.test(userAgent)) {
-      setDeviceType("mobile");
-    } else if (width >= 768 && width <= 1024) {
-      setDeviceType("tablet");
-    } else {
-      setDeviceType("desktop");
-    }
+    // if (/mobi|android/i.test(userAgent)) {
+    //   setDeviceType("mobile");
+    // } else if (width >= 768 && width <= 1024) {
+    //   setDeviceType("tablet");
+    // } else {
+    //   setDeviceType("desktop");
+    // }
 
-    // Jika perangkat mobile atau tablet, cetak otomatis setelah delay
-    if (deviceType !== "desktop") {
-      if (/mobi|android/i.test(userAgent) || (width >= 768 && width <= 1024)) {
-        setTimeout(() => {
-          window.print();
-        }, 1000);
-      }
-    }
+    // // Jika perangkat mobile atau tablet, cetak otomatis setelah delay
+    // if (deviceType !== "desktop") {
+    //   if (/mobi|android/i.test(userAgent) || (width >= 768 && width <= 1024)) {
+    //     setTimeout(() => {
+    //       window.print();
+    //     }, 1000);
+    //   }
+    // }
   }, [searchParams, router]);
+
+  const handleConnect = async () => {
+    const device = await connectToBluetoothPrinter();
+    if (device) setPrinter(device);
+  };
+
+  const handlePrint = async () => {
+    if (printer) {
+      await printReceipt(printer, `Total: Rp ${total}\nTerima Kasih!\n`);
+    } else {
+      alert("Printer belum terhubung!");
+    }
+  };
 
   const Dates = new Date().getDate();
   const Month = new Date().getMonth() + 1;
@@ -159,9 +177,17 @@ export default function CetakStruk() {
       >
         Kembali
       </button>
+      {!printer && (
+        <button
+          className="mt-4 bg-yellow-600 text-white px-3 py-2  rounded-md hover:bg-yellow-500 print:hidden mr-2"
+          onClick={handleConnect}
+        >
+          Bluetooth
+        </button>
+      )}
       <button
         className="mt-4 bg-blue-600 text-white px-3 py-2  rounded-md hover:bg-blue-500 print:hidden"
-        onClick={() => window.print()}
+        onClick={handlePrint}
       >
         Cetak Struk
       </button>
