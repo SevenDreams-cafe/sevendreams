@@ -62,7 +62,7 @@ export default function CetakStruk() {
 
     // Event listener untuk kembali ke halaman transaksi setelah cetak
     const handleAfterPrint = () => {
-      if (deviceType) {
+      if (deviceType === "desktop") {
         router.push("/cashier");
       }
     };
