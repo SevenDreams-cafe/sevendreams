@@ -16,6 +16,9 @@ export default function CetakStruk() {
   const [bayar, setBayar] = useState(0);
   const [kembalian, setKembalian] = useState(0);
   const [customers, setCustomers] = useState("");
+  const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">(
+    "desktop"
+  );
 
   useEffect(() => {
     const cartData = searchParams.get("data");
@@ -38,9 +41,30 @@ export default function CetakStruk() {
     if (bayarData) setBayar(Number(bayarData));
     if (kembalianData) setKembalian(Number(kembalianData));
 
+    // Deteksi apakah perangkat adalah mobile, tablet, atau desktop
+    const userAgent = navigator.userAgent.toLowerCase();
+    const width = window.innerWidth;
+
+    if (/mobi|android/i.test(userAgent)) {
+      setDeviceType("mobile");
+    } else if (width >= 768 && width <= 1024) {
+      setDeviceType("tablet");
+    } else {
+      setDeviceType("desktop");
+    }
+
+    // Jika perangkat mobile atau tablet, cetak otomatis setelah delay
+    if (/mobi|android/i.test(userAgent) || (width >= 768 && width <= 1024)) {
+      setTimeout(() => {
+        window.print();
+      }, 1000);
+    }
+
     // Event listener untuk kembali ke halaman transaksi setelah cetak
     const handleAfterPrint = () => {
-      router.push("/cashier"); // Redirect ke halaman transaksi
+      if (deviceType) {
+        router.push("/cashier");
+      }
     };
 
     window.addEventListener("afterprint", handleAfterPrint);
