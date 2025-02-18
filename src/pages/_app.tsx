@@ -72,9 +72,9 @@ export default function App({ Component, pageProps }: AppProps) {
           openSideBar
             ? "mx-5"
             : !hideLayout
-            ? "xl:ml-[300px] mx-5 xl:mr-[20px]"
+            ? "xl:ml-[300px] mx-5 xl:mr-[20px] mt-[100px]"
             : "mx-auto"
-        } mt-[100px] transition-all`}
+        } transition-all`}
       >
         <Component {...pageProps} />
       </main>

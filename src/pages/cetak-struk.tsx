@@ -82,7 +82,7 @@ export default function CetakStruk() {
   const Seconds = new Date().getSeconds();
 
   return (
-    <div className="max-w-md mx-auto p-6 border rounded-md shadow-md text-center">
+    <div className="px-6 text-center mt-10">
       <div className="flex gap-x-1 justify-end mb-2">
         <span>
           {Dates} - {Month} - {Years}
@@ -92,7 +92,7 @@ export default function CetakStruk() {
         </span>
       </div>
       <h1 className="text-2xl font-bold mb-4 uppercase">SevenDreams</h1>
-      <p className="text-sm mx-16 uppercase">
+      <p className="text-sm text-center uppercase">
         JL. Kompleks YPPKG Blok. K3 A No 39, Paccerakkang, Kec. Biringkanayya
         90421
       </p>
