@@ -6,3 +6,16 @@ body,
 :fullscreen {
   @apply bg-neutral-200 -z-10;
 }
+
+.animate-dropdowns {
+  animation: dropdowns 0.1s ease-in-out;
+}
+
+@keyframes dropdowns {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

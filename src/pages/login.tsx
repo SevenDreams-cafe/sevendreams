@@ -24,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <section className="flex items-center justify-center translate-y-[50%]">
       <form
         onSubmit={handleLogin}
         className="p-6 bg-white shadow-md rounded w-80"
@@ -54,6 +54,6 @@ export default function LoginPage() {
           Login
         </button>
       </form>
-    </div>
+    </section>
   );
 }
