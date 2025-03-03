@@ -122,7 +122,7 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
 
       {openDropdown && (
         <button
-          className="fixed inset-0 bg-black/30 z-40"
+          className="fixed inset-0 z-40"
           onClick={() => setOpenDropdown(false)}
         />
       )}

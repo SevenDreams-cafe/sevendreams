@@ -1,4 +1,4 @@
-import { Dispatch, type SetStateAction } from "react";
+import { Dispatch, useEffect, useState, type SetStateAction } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,6 +8,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./shadcn/Accordion";
+
+import { supabase } from "@utils/supabase";
 
 import SevenDreamsImage from "@public/sevendreams-white.png";
 import { CashierIcon } from "./icons/CashierIcon";
@@ -23,12 +25,34 @@ interface HamburgerProps {
 
 export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
   const pathname = usePathname();
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchUserRole() {
+      const { data: sessionData } = await supabase.auth.getSession();
+
+      if (sessionData?.session?.user) {
+        const userId = sessionData.session.user.id;
+        const { data, error } = await supabase
+          .from("users")
+          .select("role")
+          .eq("id", userId)
+          .single();
+
+        if (!error && data) {
+          setRole(data.role);
+        }
+      }
+    }
+
+    fetchUserRole();
+  }, []);
 
   return (
     <aside
       className={`${
         openSide ? "left-0 xl:-left-[280px]" : "-left-[280px] xl:left-0"
-      } bg-blue-600 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto text-sm lg:text-base`}
+      } bg-red-600 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto text-sm lg:text-base`}
     >
       <div className="mx-5 mt-5">
         <Image
@@ -42,7 +66,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
         <li
           className={`${
             pathname === "/" &&
-            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+            "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
           } relative`}
         >
           <Link
@@ -89,7 +113,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
         <li
           className={`${
             pathname === "/menu/stock" &&
-            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+            "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
           } relative`}
         >
           <Link
@@ -106,7 +130,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
         <li
           className={`${
             pathname === "/cashier" &&
-            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+            "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
           } relative`}
         >
           <Link
@@ -161,23 +185,27 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
             </AccordionItem>
           </Accordion>
         </li>
-        <li
-          className={`${
-            pathname === "/management-users" &&
-            "before:px-0 bg-neutral-200/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
-          } relative`}
-        >
-          <Link
-            onClick={() => setOpenSide(false)}
-            href="/management-users"
+        {role === "users" && (
+          <li
             className={`${
-              pathname === "/management-users" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
+              pathname === "/management-users" &&
+              "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+            } relative`}
           >
-            <UsersAltIcon className="w-5 h-5 fill-neutral-50" />
-            Management Users
-          </Link>
-        </li>
+            <Link
+              onClick={() => setOpenSide(false)}
+              href="/management-users"
+              className={`${
+                pathname === "/management-users"
+                  ? "font-semibold"
+                  : "font-normal"
+              } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
+            >
+              <UsersAltIcon className="w-5 h-5 fill-neutral-50" />
+              Management Users
+            </Link>
+          </li>
+        )}
       </ul>
     </aside>
   );

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user"); // Default role sebagai "user"
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -12,10 +13,32 @@ export default function SignupPage() {
     e.preventDefault();
     setError(null);
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    // 1. Sign up user ke auth.users
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
     if (error) {
       setError(error.message);
-    } else {
+      return;
+    }
+
+    if (data.user) {
+      // 2. Tambahkan user ke tabel "users" dengan role default
+      const { error: insertError } = await supabase.from("users").insert([
+        {
+          id: data.user.id, // Gunakan ID dari Supabase Auth
+          email,
+          role, // Simpan role di tabel users
+        },
+      ]);
+
+      if (insertError) {
+        setError(insertError.message);
+        return;
+      }
+
       alert("Check your email to confirm the account!");
       router.push("/login");
     }
@@ -45,6 +68,14 @@ export default function SignupPage() {
           className="w-full p-2 border rounded mb-2"
           required
         />
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="w-full p-2 border rounded mb-2"
+        >
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
         <button
           type="submit"
           className="w-full bg-green-500 text-white p-2 rounded"
