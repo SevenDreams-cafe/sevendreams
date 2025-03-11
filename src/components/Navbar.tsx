@@ -12,6 +12,7 @@ import type { AuthUsers } from "@type/AuthUser";
 
 import { AngleSmallDownIcon } from "./icons/AngleSmallDownIcon";
 import { HamburgerIcon } from "./icons/HamburgerIcon";
+import { TimePastIcon } from "./shadcn/TimePastIcon";
 import { PowerIcon } from "./icons/PowerIcon";
 import { UserGearIcon } from "./icons/UserGearIcon";
 
@@ -28,7 +29,6 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   const breakpoint = useWindowSize();
   const [user, setUser] = useState<AuthUsers | null>(null);
   const [openDropdown, setOpenDropdown] = useState(false);
-
   const router = useRouter();
 
   async function checkUser() {
@@ -67,6 +67,9 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
 
         <div className="flex items-center gap-x-4">
           <Fullscreen />
+          <button type="button" onClick={() => router.refresh()}>
+            <TimePastIcon className="w-5 h-5 fill-slate-200" />
+          </button>
           <div className="relative w-auto z-[52]">
             <Button
               type="button"
