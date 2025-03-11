@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/router";
-import { ChangeEvent, FormEvent } from "react";
+import Link from "next/link";
+import { supabase } from "@utils/supabase";
 
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
@@ -30,44 +30,43 @@ interface MenuProps {
   tbl_categori: CategoriProps;
 }
 
-export default function EdithMenu() {
+export default function EditMenu() {
   const router = useRouter();
   const { id } = router.query;
-
   const [dataMenu, setDataMenu] = useState<MenuProps | null>(null);
   const [dataCategori, setDataCategori] = useState<CategoriProps[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchDataMenu() {
-      const response = await fetch(`/api/menu/getEdit?id=${id}`);
-      const data = await response.json();
+    if (!router.isReady || !id) return;
 
-      if (response.ok) {
+    async function fetchDataMenu() {
+      try {
+        const response = await fetch(`/api/menu/getEdit?id=${id}`);
+        if (!response.ok) throw new Error("Gagal mengambil data menu");
+        const data = await response.json();
         setDataMenu(data);
-      } else {
-        console.error("Error fetching data:", data.message);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     }
 
     async function fetchDataCategori() {
-      const response = await fetch(`/api/categori/getCategori`);
-      const data = await response.json();
-
-      if (response.ok) {
+      try {
+        const response = await fetch(`/api/categori/getCategori`);
+        if (!response.ok) throw new Error("Gagal mengambil kategori");
+        const data = await response.json();
         setDataCategori(data);
-      } else {
-        console.error("Error fetching categories:", data.message);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
       }
     }
 
-    if (id) {
-      fetchDataMenu();
-      fetchDataCategori();
-    }
-  }, [id]);
+    fetchDataMenu();
+    fetchDataCategori();
+  }, [router.isReady, id]);
 
-  // onChange Value Categori Option
   function handleChangeCategori(value: string) {
     const selectedCategory = dataCategori.find(
       (cat) => cat.id === parseInt(value)
@@ -84,169 +83,162 @@ export default function EdithMenu() {
     }
   }
 
-  // onChange Value Menu Input
   function handleChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) {
     const { name, value } = e.target;
-
-    setDataMenu((prev) =>
-      prev
-        ? {
-            ...prev,
-            [name]:
-              name === "harga_pokok" || name === "harga_jual" // Cast to number for numeric fields
-                ? parseInt(value, 10)
-                : value,
-          }
-        : null
-    );
+    setDataMenu((prev) => (prev ? { ...prev, [name]: value } : null));
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
 
-    if (dataMenu) {
-      const response = await fetch("/api/menu/editMenu", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataMenu),
-      });
+    let imageUrl = dataMenu?.image_url;
 
-      const result = await response.json();
+    if (selectedFile) {
+      const fileExt = selectedFile.name.split(".").pop();
+      const filePath = `menu/${id}.${fileExt}`;
 
-      if (response.ok) {
-        alert(result.message);
-        // router.push("/menu"); // Redirect after success
-      } else {
-        console.error("Error updating menu:", result.message);
+      const { error: uploadError } = await supabase.storage
+        .from("images_menu")
+        .upload(filePath, selectedFile, { upsert: true });
+
+      if (uploadError) {
+        console.error("Error uploading file:", uploadError);
+        setLoading(false);
+        return;
       }
+
+      const { data } = supabase.storage
+        .from("images_menu")
+        .getPublicUrl(filePath);
+      imageUrl = data.publicUrl;
     }
 
+    const { error } = await supabase
+      .from("tbl_menu")
+      .update({
+        name: dataMenu?.name,
+        harga_pokok: dataMenu?.harga_pokok,
+        harga_jual: dataMenu?.harga_jual,
+        image_url: imageUrl,
+        id_categori: dataMenu?.tbl_categori.id || null, // Tambahkan id_categori
+      })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error updating menu:", error);
+    } else {
+      alert("Menu berhasil diperbarui!");
+      router.push("/menu");
+    }
     setLoading(false);
   }
 
   return (
-    <>
-      <section className="w-full p-8 bg-white rounded-md mb-4">
-        <h2 className="text-lg font-bold">Edit Menu </h2>
-
-        <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
-          <div className="flex flex-col gap-y-4">
-            <div>
-              <Label className="text-sm text-neutral-600">Kategori Menu</Label>
-              <Select
-                name="tbl_categori"
-                value={`${dataMenu?.tbl_categori.id}`}
-                onValueChange={handleChangeCategori}
-              >
-                <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm focus:border-blue-500 duration-150 text-neutral-600">
-                  <SelectValue placeholder="Pilih Kategori Makanan..." />
-                </SelectTrigger>
-                <SelectContent className="bg-white">
-                  <SelectGroup>
-                    {dataCategori.map((categori) => (
-                      <SelectItem key={categori.id} value={`${categori.id}`}>
-                        {categori.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-600">Nama Menu</Label>
-              <Input
-                type="text"
-                name="name"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                placeholder="Masukkan nama menu..."
-                value={dataMenu?.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-600">Harga Pokok</Label>
-              <Input
-                type="number"
-                name="harga_pokok"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                placeholder="Masukkan harga pokok menu..."
-                value={dataMenu?.harga_pokok}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-600">Harga Jual</Label>
-              <Input
-                type="number"
-                name="harga_jual"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                placeholder="Masukkan harga jual menu..."
-                value={dataMenu?.harga_jual}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-y-4">
-            <div>
-              <Label className="text-sm text-neutral-600">Harga Jual</Label>
-              <Input
-                type="number"
-                name="harga_jual"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                placeholder="Masukkan harga jual menu..."
-                value={dataMenu?.harga_jual}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-600">Gambar Menu</Label>
-              <Input
-                type="text"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                value={dataMenu?.image_url}
-                // onChange={handleChange}
-              />
-              <Input
-                type="file"
-                name="image_url"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label className="text-sm text-neutral-600">Keterangan</Label>
-              <Textarea
-                cols={3}
-                rows={5}
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
-                placeholder="Masukkan keterangan menu.."
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-x-2">
-            <Button
-              type="submit"
-              variant="destructive"
-              className="bg-green-700 hover:bg-green-600 duration-150 w-max text-neutral-50 text-xs lg:text-sm"
+    <section className="w-full p-8 bg-slate-900 text-slate-200 rounded-md mb-4">
+      <h2 className="text-lg font-bold">Edit Menu</h2>
+      <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
+        <div className="flex flex-col gap-y-4">
+          {/* Pilih Kategori */}
+          <div>
+            <Label className="text-sm text-slate-200">Kategori Menu</Label>
+            <Select
+              name="tbl_categori"
+              value={dataMenu?.tbl_categori?.id?.toString() || ""}
+              onValueChange={handleChangeCategori}
             >
-              {loading ? "Saving..." : "Save Changes"}
-            </Button>
-            <Link href="/menu">
-              <Button
-                type="button"
-                variant="destructive"
-                className="bg-red-700 hover:bg-red-600 duration-150 w-max text-neutral-50 text-xs lg:text-sm"
-              >
-                Kembali
-              </Button>
-            </Link>
+              <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm duration-150 bg-slate-800 border-slate-600">
+                <SelectValue placeholder="Pilih Kategori Makanan..." />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectGroup>
+                  {dataCategori.map((categori) => (
+                    <SelectItem
+                      value={categori.id.toString()}
+                      key={categori.id}
+                    >
+                      {categori.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
-        </form>
-      </section>
-    </>
+
+          <div>
+            <Label className="text-sm text-slate-200">Nama Menu</Label>
+            <Input
+              type="text"
+              name="name"
+              value={dataMenu?.name || ""}
+              onChange={handleChange}
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+            />
+          </div>
+
+          <div>
+            <Label className="text-sm text-slate-200">Harga Pokok</Label>
+            <Input
+              type="number"
+              name="harga_pokok"
+              value={dataMenu?.harga_pokok || ""}
+              onChange={handleChange}
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+            />
+          </div>
+
+          <div>
+            <Label className="text-sm text-slate-200">Harga Jual</Label>
+            <Input
+              type="number"
+              name="harga_jual"
+              value={dataMenu?.harga_jual || ""}
+              onChange={handleChange}
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-y-4">
+          <div>
+            <Label className="text-sm text-slate-200">Gambar</Label>
+            <Input
+              type="file"
+              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600 file:text-slate-200"
+              accept=".jpg,.jpeg,.png"
+            />
+          </div>
+          <div>
+            <Label className="text-sm text-slate-200">Keterangan</Label>
+            <Textarea
+              cols={3}
+              rows={5}
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+              placeholder="Masukkan keterangan menu..."
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-x-3">
+          <Button
+            type="submit"
+            className="bg-green-700 hover:bg-green-600 text-white"
+          >
+            {loading ? "Saving..." : "Save Changes"}
+          </Button>
+          <Link href="/menu">
+            <Button
+              type="button"
+              className="bg-red-700 hover:bg-red-600 text-white"
+            >
+              Kembali
+            </Button>
+          </Link>
+        </div>
+      </form>
+    </section>
   );
 }

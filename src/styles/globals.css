@@ -4,7 +4,7 @@
 
 body,
 :fullscreen {
-  @apply bg-neutral-200 -z-10;
+  @apply bg-slate-800 -z-10;
 }
 
 .animate-dropdowns {

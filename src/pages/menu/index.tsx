@@ -109,17 +109,17 @@ export default function DaftarMenu() {
       {loading ? (
         "Loading"
       ) : (
-        <section className="w-full p-8 bg-white rounded-md">
+        <section className="w-full p-8 bg-slate-900 rounded-md text-slate-200">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
               <Input
                 type="text"
-                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-neutral-200 bg-neutral-50 w-full pl-8"
+                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-slate-700 bg-slate-700 w-full pl-8 text-sm text-slate-300"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-neutral-700" />
+              <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-slate-300" />
             </div>
 
             <Link
@@ -132,7 +132,7 @@ export default function DaftarMenu() {
           <div className="mt-5">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="text-center border-slate-600">
                   <TableHead className="w-[40px] lg:w-[60px] text-center">
                     #
                   </TableHead>
@@ -164,7 +164,7 @@ export default function DaftarMenu() {
                   <TableRow
                     key={`${menu.id}${menuIndex + 1}`}
                     tabIndex={menuIndex}
-                    className="even:bg-neutral-100"
+                    className="even:bg-slate-800 border-slate-600"
                   >
                     <TableCell>{menuIndex + 1}</TableCell>
                     <TableCell className="">
@@ -212,6 +212,10 @@ export default function DaftarMenu() {
                 ))}
               </TableBody>
             </Table>
+
+            {filteredMenu.length === 0 && (
+              <h2 className="text-center mt-4">No data available</h2>
+            )}
           </div>
         </section>
       )}

@@ -59,11 +59,11 @@ export function InsertCategori({ onNewItem }: CategoriNewProps) {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="bg-white rounded-md"
+        className="bg-slate-900 border-slate-700"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg lg:text-xl">
+          <DialogTitle className="text-slate-200">
             Buat Kategori Baru
           </DialogTitle>
         </DialogHeader>
@@ -73,6 +73,7 @@ export function InsertCategori({ onNewItem }: CategoriNewProps) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="w-full px-3 py-2 text-sm text-slate-400 border border-transparent bg-slate-700 rounded-md mb-2.5 outline-none focus-visible:border-transparent focus-visible:ring-offset-1 focus-visible:ring-offset-slate-600 focus-visible:ring-0"
               placeholder="Masukkan nama kategori..."
             />
             <div className="flex justify-end gap-x-3 items-center">

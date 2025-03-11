@@ -16,6 +16,7 @@ import { CashierIcon } from "./icons/CashierIcon";
 import { DollyFlatbedIcon } from "./icons/DollyFlatbedIcon";
 import { FolderOpenIcon } from "./icons/FolderOpenIcon";
 import { GridIcon } from "./icons/GridIcon";
+import { ReportFolderIcon } from "./icons/ReportFolderIcon";
 import { UsersAltIcon } from "./icons/UsersAltIcon";
 
 interface HamburgerProps {
@@ -52,7 +53,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
     <aside
       className={`${
         openSide ? "left-0 xl:-left-[280px]" : "-left-[280px] xl:left-0"
-      } bg-red-600 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto text-sm lg:text-base`}
+      } bg-slate-900 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto text-sm lg:text-base`}
     >
       <div className="mx-5 mt-5">
         <Image
@@ -66,7 +67,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
         <li
           className={`${
             pathname === "/" &&
-            "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
           } relative`}
         >
           <Link
@@ -74,16 +75,19 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
             href="/"
             className={`${
               pathname === "/" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
           >
-            <GridIcon className="w-5 h-5 fill-neutral-50" />
+            <GridIcon className="w-5 h-5 fill-slate-200" />
             Dashboard
           </Link>
         </li>
-        <li className="relative">
-          <Accordion type="single" collapsible className="px-6 relative">
-            <AccordionItem value="item-1" className="border-b-0 outline-none">
-              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-neutral-50 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-neutral-50">
+        <Accordion type="single" collapsible className="px-6 relative">
+          <li rel="Master Data">
+            <AccordionItem
+              value="master-data"
+              className="border-b-0 outline-none"
+            >
+              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-slate-200 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-slate-200">
                 <FolderOpenIcon className="folderOpen w-5 h-5" />
                 <span>Master Data</span>
               </AccordionTrigger>
@@ -93,7 +97,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href="/categori"
                   className={`${
                     pathname === "/categori" ? "font-semibold" : "font-normal"
-                  } text-neutral-50`}
+                  } text-slate-200`}
                 >
                   Kategori
                 </Link>
@@ -102,53 +106,17 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href="/menu"
                   className={`${
                     pathname === "/menu" ? "font-semibold" : "font-normal"
-                  } text-neutral-50`}
+                  } text-slate-200`}
                 >
                   Daftar Menu
                 </Link>
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
-        </li>
-        <li
-          className={`${
-            pathname === "/menu/stock" &&
-            "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
-          } relative`}
-        >
-          <Link
-            onClick={() => setOpenSide(false)}
-            href="/menu/stock"
-            className={`${
-              pathname === "/menu/stock" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
-          >
-            <DollyFlatbedIcon className="w-5 h-5 fill-neutral-50" />
-            Stock
-          </Link>
-        </li>
-        <li
-          className={`${
-            pathname === "/cashier" &&
-            "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
-          } relative`}
-        >
-          <Link
-            onClick={() => setOpenSide(false)}
-            href="/cashier"
-            className={`${
-              pathname === "/cashier" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
-          >
-            <CashierIcon className="w-5 h-5 fill-neutral-50" />
-            Kasir
-          </Link>
-        </li>
-        <li className="relative">
-          <Accordion type="single" collapsible className="px-6 relative">
-            <AccordionItem value="item-1" className="border-b-0 outline-none">
-              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-neutral-50 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-neutral-50">
-                <FolderOpenIcon className="folderOpen w-5 h-5" />
+          </li>
+          <li rel="Report Collapse">
+            <AccordionItem value="report" className="border-b-0 outline-none">
+              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-slate-200 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-slate-200">
+                <ReportFolderIcon className="folderOpen w-5 h-5" />
                 <span>Laporan</span>
               </AccordionTrigger>
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
@@ -157,7 +125,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href=""
                   className={`${
                     pathname === "/transaksi" ? "font-semibold" : "font-normal"
-                  } text-neutral-50`}
+                  } text-slate-200`}
                 >
                   Transaksi Penjualan
                 </Link>
@@ -168,7 +136,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                     pathname === "/history-menu"
                       ? "font-semibold"
                       : "font-normal"
-                  } text-neutral-50`}
+                  } text-slate-200`}
                 >
                   History Per Menu
                 </Link>
@@ -177,19 +145,53 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href=""
                   className={`${
                     pathname === "/cash-flow" ? "font-semibold" : "font-normal"
-                  } text-neutral-50`}
+                  } text-slate-200`}
                 >
                   Cash Flow
                 </Link>
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+          </li>
+        </Accordion>
+        <li
+          className={`${
+            pathname === "/menu/stock" &&
+            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+          } relative`}
+        >
+          <Link
+            onClick={() => setOpenSide(false)}
+            href="/menu/stock"
+            className={`${
+              pathname === "/menu/stock" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+          >
+            <DollyFlatbedIcon className="w-5 h-5 fill-slate-200" />
+            Stock
+          </Link>
+        </li>
+        <li
+          className={`${
+            pathname === "/cashier" &&
+            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+          } relative`}
+        >
+          <Link
+            onClick={() => setOpenSide(false)}
+            href="/cashier"
+            className={`${
+              pathname === "/cashier" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+          >
+            <CashierIcon className="w-5 h-5 fill-slate-200" />
+            Kasir
+          </Link>
         </li>
         {role === "users" && (
           <li
             className={`${
               pathname === "/management-users" &&
-              "before:px-0 bg-neutral-400/50 before:w-1 before:h-full before:absolute before:bg-neutral-50"
+              "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
             } relative`}
           >
             <Link
@@ -199,9 +201,9 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                 pathname === "/management-users"
                   ? "font-semibold"
                   : "font-normal"
-              } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-50`}
+              } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
             >
-              <UsersAltIcon className="w-5 h-5 fill-neutral-50" />
+              <UsersAltIcon className="w-5 h-5 fill-slate-200" />
               Management Users
             </Link>
           </li>

@@ -51,7 +51,7 @@ export default function Categori() {
   const handleDelete = async (id: number) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "Deleted data cannot be recovered!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -94,68 +94,64 @@ export default function Categori() {
     <>
       {loading && <p>Loading...</p>}
       {!loading && (
-        <section className="w-full p-8 bg-white rounded-md">
+        <section className="w-full p-8 bg-slate-900 rounded-md text-slate-200">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
               <Input
                 type="text"
-                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-neutral-200 bg-neutral-50 w-full pl-8"
+                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-slate-700 bg-slate-700 w-full pl-8 text-sm text-slate-300"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-neutral-700" />
+              <SearchIcon className="absolute w-4 h-4 ml-2.5 fill-slate-300" />
             </div>
 
             <InsertCategori onNewItem={handleNewItem} />
           </div>
           <div className="mt-5">
-            {filteredCategori.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow className="text-center">
-                    <TableHead className="w-[60px]">#</TableHead>
-                    <TableHead className="lg:w-[400px]">
-                      Nama Kategori
-                    </TableHead>
-                    <TableHead className="lg:w-[120px] text-center">
-                      Action
-                    </TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow className="text-center border-slate-600">
+                  <TableHead className="w-[60px]">#</TableHead>
+                  <TableHead className="lg:w-[400px]">Nama Kategori</TableHead>
+                  <TableHead className="lg:w-[120px] text-center">
+                    Action
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCategori.map((categori, index) => (
+                  <TableRow
+                    key={categori.id}
+                    tabIndex={index}
+                    className="even:bg-slate-800 border-slate-600"
+                  >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{categori.name}</TableCell>
+                    <TableCell className="text-center">
+                      <EditCategoriDialog
+                        categoryId={categori.id}
+                        currentName={categori.name}
+                        onCategoryUpdated={fetchCategori}
+                      />
+                      <span className="px-1.5">||</span>
+                      <Button
+                        variant="secondary"
+                        type="button"
+                        className="w-auto bg-red-500 text-xs md:text-sm text-slate-200 px-3 py-1.5 h-auto rounded-md"
+                        onClick={() => handleDelete(categori.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredCategori.map((categori, index) => (
-                    <TableRow
-                      key={categori.id}
-                      tabIndex={index}
-                      className="even:bg-neutral-100"
-                    >
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{categori.name}</TableCell>
-                      <TableCell className="text-center">
-                        <EditCategoriDialog
-                          categoryId={categori.id}
-                          currentName={categori.name}
-                          onCategoryUpdated={fetchCategori}
-                        />
-                        <span className="px-1.5">||</span>
-                        <Button
-                          variant="secondary"
-                          type="button"
-                          className="w-auto bg-red-500 text-xs md:text-sm text-neutral-50 px-3 py-1.5 h-auto rounded-md"
-                          onClick={() => handleDelete(categori.id)}
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <p className="text-center text-neutral-500">
-                No categories found.
-              </p>
+                ))}
+              </TableBody>
+            </Table>
+
+            {filteredCategori.length === 0 && (
+              <h2 className="text-center mt-4">No data available</h2>
             )}
           </div>
         </section>

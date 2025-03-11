@@ -26,8 +26,7 @@ export default function TambahMenu() {
   const [categoriID, setCategoriID] = useState("");
   const [hargaPokok, setHargaPokok] = useState("");
   const [hargaJual, setHargaJual] = useState("");
-  const [imagesUrl, setImagesUrl] = useState<File | null>(null);
-
+  const [imagesUrll, setImagesUrl] = useState<File | null>(null);
   const [dataCategori, setDataCategori] = useState<DataCategoriProps[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -46,15 +45,16 @@ export default function TambahMenu() {
     setLoading(true);
 
     try {
-      const fileName = `${Date.now()}${imagesUrl?.name}`;
+      const fileName = `${Date.now()}${imagesUrll?.name}`;
+      const filePath = `menu/${fileName}`;
 
       await supabase.storage
         .from("images_menu")
-        .upload(fileName, imagesUrl as File);
+        .upload(filePath, imagesUrll as File);
 
       const { data: publicUrlData } = supabase.storage
         .from("images_menu")
-        .getPublicUrl(fileName);
+        .getPublicUrl(filePath);
 
       const imageUrl = publicUrlData.publicUrl;
 
@@ -83,15 +83,15 @@ export default function TambahMenu() {
 
   return (
     <>
-      <section className="w-full p-8 bg-white rounded-md">
+      <section className="w-full p-8 bg-slate-900 rounded-md text-slate-200">
         <h2 className="text-lg font-bold">Tambah Menu</h2>
 
         <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
           <div className="flex flex-col gap-y-4">
             <div>
-              <Label className="text-sm text-neutral-600">Kategori Menu</Label>
+              <Label className="text-sm text-slate-200">Kategori Menu</Label>
               <Select onValueChange={(value) => setCategoriID(value)}>
-                <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm focus:border-blue-500 duration-150 text-neutral-600">
+                <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm duration-150 bg-slate-800 border-slate-600">
                   <SelectValue placeholder="Pilih Kategori Makanan..." />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
@@ -109,30 +109,30 @@ export default function TambahMenu() {
               </Select>
             </div>
             <div>
-              <Label className="text-sm text-neutral-600">Nama Menu</Label>
+              <Label className="text-sm text-slate-200">Nama Menu</Label>
               <Input
                 type="text"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
                 placeholder="Masukkan nama menu..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
-              <Label className="text-sm text-neutral-600">Harga Pokok</Label>
+              <Label className="text-sm text-slate-200">Harga Pokok</Label>
               <Input
                 type="number"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
                 placeholder="Masukkan harga pokok menu..."
                 value={hargaPokok}
                 onChange={(e) => setHargaPokok(e.target.value)}
               />
             </div>
             <div>
-              <Label className="text-sm text-neutral-600">Harga Jual</Label>
+              <Label className="text-sm text-slate-200">Harga Jual</Label>
               <Input
                 type="number"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
                 placeholder="Masukkan harga jual menu..."
                 value={hargaJual}
                 onChange={(e) => setHargaJual(e.target.value)}
@@ -141,19 +141,19 @@ export default function TambahMenu() {
           </div>
           <div className="flex flex-col gap-y-4">
             <div>
-              <Label className="text-sm text-neutral-600">Gambar Menu</Label>
+              <Label className="text-sm text-slate-200">Gambar Menu</Label>
               <Input
                 type="file"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 text-slate-200 file:text-slate-200 border-slate-600 bg-slate-800"
                 onChange={(e) => setImagesUrl(e.target.files?.[0] || null)}
               />
             </div>
             <div>
-              <Label className="text-sm text-neutral-600">Keterangan</Label>
+              <Label className="text-sm text-slate-200">Keterangan</Label>
               <Textarea
                 cols={3}
                 rows={5}
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
                 placeholder="Masukkan keterangan menu.."
               />
             </div>

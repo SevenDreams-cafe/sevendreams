@@ -57,11 +57,11 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   return (
     <>
       <header
-        className={`${karla.className} antialiased w-full fixed top-0 bg-white h-20 items-center flex justify-between xl:justify-end pr-10 z-50`}
+        className={`${karla.className} antialiased w-full fixed top-0 bg-slate-950 text-slate-200 h-20 items-center flex justify-between xl:justify-end pr-10 z-50`}
       >
         {breakpoint < 1280 && (
           <button className="ml-5" onClick={() => setOpenSide(!openSide)}>
-            <HamburgerIcon className="w-3 h-3" />
+            <HamburgerIcon className="w-3 h-3 fill-slate-300" />
           </button>
         )}
 
@@ -92,7 +92,7 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
                 </div>
               </div>
               <AngleSmallDownIcon
-                className={`w-5 mt-1.5 transition-transform ${
+                className={`w-5 mt-1.5 transition-transform fill-slate-200 ${
                   !openDropdown ? "rotate-0" : "-rotate-180"
                 }`}
               />
