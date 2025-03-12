@@ -25,23 +25,30 @@ interface DaftarMenuProps extends MenuProps {
 }
 
 export default function DaftarMenu() {
-  const [dataMenu, setDataMenu] = useState<DaftarMenuProps[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const PAGE_SIZE = 10;
 
+  const [dataMenu, setDataMenu] = useState<DaftarMenuProps[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function fetchMenu() {
     try {
-      const response = await fetch("/api/menu/getMenu");
+      const from = (page - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+      const { data, count, error } = await supabase
+        .from("tbl_menu")
+        .select("*, tbl_categori(*)", { count: "exact" })
+        .range(from, to);
+
+      if (error) {
+        throw new Error("Failed to fetch menu");
       }
 
-      const menus = await response.json();
-
-      setDataMenu(menus);
-      setLoading(true);
+      setDataMenu(data || []);
+      setTotalPages(Math.ceil((count || 0) / PAGE_SIZE));
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
@@ -49,10 +56,14 @@ export default function DaftarMenu() {
     }
   }
 
+  useEffect(() => {
+    fetchMenu();
+  }, [page]);
+
   const handleDelete = async (id: number) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "Deleted data cannot be recovered!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -75,7 +86,7 @@ export default function DaftarMenu() {
 
           Swal.fire({
             title: `Success`,
-            text: "Your menu has been successfully deleted",
+            text: "Data successfully deleted",
             icon: "success",
           });
         }
@@ -85,10 +96,6 @@ export default function DaftarMenu() {
       }
     });
   };
-
-  useEffect(() => {
-    fetchMenu();
-  }, []);
 
   const filteredMenu = dataMenu.filter(
     (menu) =>
@@ -166,7 +173,9 @@ export default function DaftarMenu() {
                     tabIndex={menuIndex}
                     className="even:bg-slate-800 border-slate-600"
                   >
-                    <TableCell>{menuIndex + 1}</TableCell>
+                    <TableCell>
+                      {(page - 1) * PAGE_SIZE + menuIndex + 1}
+                    </TableCell>
                     <TableCell className="">
                       <img
                         src={menu.image_url}
@@ -216,6 +225,28 @@ export default function DaftarMenu() {
             {filteredMenu.length === 0 && (
               <h2 className="text-center mt-4">No data available</h2>
             )}
+
+            <div className="flex justify-between mt-4">
+              <span className="text-sm">
+                Page {page} of {totalPages}
+              </span>
+              <div className="">
+                <Button
+                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={page === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  onClick={() =>
+                    setPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={page === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
       )}

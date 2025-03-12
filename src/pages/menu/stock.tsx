@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
 import {
   Table,
@@ -11,6 +12,7 @@ import {
 
 import type { CategoriProps } from "@type/categoris";
 import type { MenuProps } from "@type/menu";
+import { supabase } from "@utils/supabase";
 
 import { AddStockDialog } from "@components/AddStockDialog";
 
@@ -21,23 +23,31 @@ interface StockProps extends MenuProps {
 }
 
 export default function Stock() {
+  const PAGE_SIZE = 10;
+
   const [dataMenu, setMenu] = useState<StockProps[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState(false);
   const [searchStock, setSearchStock] = useState("");
 
   async function fetchStock() {
     try {
-      const response = await fetch("/api/menu/getMenu");
+      const from = (page - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+      const { data, count, error } = await supabase
+        .from("tbl_menu")
+        .select("*, tbl_categori(*)", { count: "exact" })
+        .range(from, to);
+
+      if (error) {
+        throw new Error("Failed to fetch menu");
       }
 
-      const menus = await response.json();
-
-      setMenu(menus);
-      setLoading(true);
+      setMenu(data || []);
+      setTotalPages(Math.ceil((count || 0) / PAGE_SIZE));
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
@@ -47,7 +57,7 @@ export default function Stock() {
 
   useEffect(() => {
     fetchStock();
-  }, []);
+  }, [page]);
 
   // Searching Stock
   const filteredStock = dataMenu.filter(
@@ -134,6 +144,32 @@ export default function Stock() {
                 ))}
               </TableBody>
             </Table>
+
+            {filteredStock.length === 0 && (
+              <h2 className="text-center mt-4">No data available</h2>
+            )}
+
+            <div className="flex justify-between mt-4">
+              <span className="text-sm">
+                Page {page} of {totalPages}
+              </span>
+              <div className="">
+                <Button
+                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={page === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  onClick={() =>
+                    setPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={page === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
       )}

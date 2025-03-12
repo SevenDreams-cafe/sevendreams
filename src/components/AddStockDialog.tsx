@@ -67,7 +67,7 @@ export function AddStockDialog({
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="bg-neutral-50"
+        className="bg-slate-900 border-slate-700 text-slate-200"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogHeader>
@@ -78,23 +78,25 @@ export function AddStockDialog({
             <div>
               <Label className="block mb-2">Minimum Stock</Label>
               <Input
-                type="number"
+                type="text"
                 min={0}
                 value={minimumStock}
                 onChange={(e) => setMinimumStock(Number(e.target.value))}
                 placeholder="Masukkan Stock Minimum..."
                 autoFocus={false}
+                className="w-full px-3 py-2 text-sm text-slate-400 border border-transparent bg-slate-700 rounded-md mb-2.5 outline-none focus-visible:border-transparent focus-visible:ring-offset-1 focus-visible:ring-offset-slate-600 focus-visible:ring-0"
               />
             </div>
             <div>
               <Label className="block mb-2">Stok Menu</Label>
               <Input
-                type="number"
-                min={1}
+                type="text"
+                min={0}
                 value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 placeholder="Masukkan Stock Menu..."
                 autoFocus={false}
+                className="w-full px-3 py-2 text-sm text-slate-400 border border-transparent bg-slate-700 rounded-md mb-2.5 outline-none focus-visible:border-transparent focus-visible:ring-offset-1 focus-visible:ring-offset-slate-600 focus-visible:ring-0"
               />
             </div>
             <div className="flex justify-end gap-x-3 items-center">

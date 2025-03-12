@@ -22,9 +22,13 @@ import { InsertCategori } from "@components/categori/InsertCategori";
 import { SearchIcon } from "@components/icons/SearchIcon";
 
 export default function Categori() {
+  const PAGE_SIZE = 10;
+
   const [loading, setLoading] = useState(true);
   const [dataCategori, setDataCategori] = useState<CategoriProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   function handleNewItem(item: CategoriProps) {
     setDataCategori((prevItems) => [...prevItems, item]);
@@ -32,21 +36,30 @@ export default function Categori() {
 
   async function fetchCategori() {
     try {
-      const response = await fetch("/api/categori/getCategori");
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+      const from = (page - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+
+      const { data, count, error } = await supabase
+        .from("tbl_categori")
+        .select("*", { count: "exact" })
+        .range(from, to);
+
+      if (error) {
+        throw new Error("Failed to fetch menu");
       }
-      const data = await response.json();
-      setDataCategori(data);
+
+      setDataCategori(data || []);
+      setTotalPages(Math.ceil((count || 0) / PAGE_SIZE));
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
       setLoading(false);
     }
   }
+
   useEffect(() => {
     fetchCategori();
-  }, []);
+  }, [page]);
 
   const handleDelete = async (id: number) => {
     Swal.fire({
@@ -75,7 +88,7 @@ export default function Categori() {
           // Sweatalert ketika data sukses di hapus
           Swal.fire({
             title: `Success`,
-            text: "Your menu has been successfully deleted",
+            text: "Data successfully deleted",
             icon: "success",
           });
         }
@@ -127,7 +140,7 @@ export default function Categori() {
                     tabIndex={index}
                     className="even:bg-slate-800 border-slate-600"
                   >
-                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{(page - 1) * PAGE_SIZE + index + 1}</TableCell>
                     <TableCell>{categori.name}</TableCell>
                     <TableCell className="text-center">
                       <EditCategoriDialog
@@ -153,6 +166,28 @@ export default function Categori() {
             {filteredCategori.length === 0 && (
               <h2 className="text-center mt-4">No data available</h2>
             )}
+
+            <div className="flex justify-between mt-4">
+              <span className="text-sm">
+                Page {page} of {totalPages}
+              </span>
+              <div className="">
+                <Button
+                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={page === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  onClick={() =>
+                    setPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={page === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
       )}

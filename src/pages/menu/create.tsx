@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormEvent } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { Button } from "@components/shadcn/Button";
@@ -16,6 +17,8 @@ import {
 import { Textarea } from "@components/shadcn/Textarea";
 import { supabase } from "@utils/supabase";
 
+import Swal from "sweetalert2";
+
 interface DataCategoriProps {
   id: number;
   name: string;
@@ -28,6 +31,7 @@ export default function TambahMenu() {
   const [hargaJual, setHargaJual] = useState("");
   const [imagesUrll, setImagesUrl] = useState<File | null>(null);
   const [dataCategori, setDataCategori] = useState<DataCategoriProps[]>([]);
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -74,6 +78,16 @@ export default function TambahMenu() {
     } finally {
       setImagesUrl(null);
       setLoading(false);
+
+      Swal.fire({
+        title: "Success",
+        text: "Data successfully added!",
+        icon: "success",
+        confirmButtonColor: "#00879E",
+        confirmButtonText: "Understand",
+      }).then(() => {
+        router.push("/menu");
+      });
     }
   }
 
@@ -146,6 +160,7 @@ export default function TambahMenu() {
                 type="file"
                 className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 text-slate-200 file:text-slate-200 border-slate-600 bg-slate-800"
                 onChange={(e) => setImagesUrl(e.target.files?.[0] || null)}
+                accept=".jpg,.jpeg,.png"
               />
             </div>
             <div>
