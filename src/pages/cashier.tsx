@@ -152,7 +152,7 @@ export default function Cashier() {
       {loading ? (
         "Loading"
       ) : (
-        <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-x-6">
+        <div className="flex flex-col lg:flex-row items-start gap-y-4 lg:gap-x-6">
           {/* Bagian Menu Kasir */}
           <section className=" bg-neutral-50 rounded-md lg:w-3/5 items-start">
             <div className="bg-blue-700 rounded-t-md py-3 px-4">
