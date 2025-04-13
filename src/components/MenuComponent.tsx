@@ -41,7 +41,7 @@ export function MenuComponent({
     <button
       key={`${menuID}${menuIndex + 1}`}
       type="button"
-      className="p-2 border border-neutral-300 rounded-md"
+      className="pb-2 border border-neutral-300 rounded-md"
       onClick={() =>
         handleAddToTransaction({
           id: menuID,
@@ -51,15 +51,15 @@ export function MenuComponent({
         })
       }
     >
-      <div className="relative h-36 w-full overflow-hidden">
+      <div className="relative h-36 w-full rounded-t overflow-hidden top-0">
         <img src={images} alt="Bakso" className="object-cover w-full h-full" />
       </div>
-      <div className="mt-2 text-center">
-        <h5 className="text-sm font-bold">{name}</h5>
+      {/* <div className="mt-2 text-center">
+        <h5 className="text-sm font-bold px-2">{name}</h5>
         <h6 className="text-sm font-bold text-green-600 mt-1">
           {hargaJual.toLocaleString()}
         </h6>
-      </div>
+      </div> */}
     </button>
   );
 }

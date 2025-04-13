@@ -58,7 +58,7 @@ export default function LoginPage() {
     if (role === "admin") {
       router.push("/");
     } else {
-      router.push("/");
+      router.push("/tes");
     }
   }
 

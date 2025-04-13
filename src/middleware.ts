@@ -11,14 +11,16 @@ export async function middleware(req: NextRequest) {
   const isProtectedPage = req.nextUrl.pathname.startsWith("/dashboard");
 
   // Jika user belum login dan mencoba masuk ke halaman dashboard
-  if (isProtectedPage && !session) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+
+  // if (isProtectedPage && !session) {
+  //   return NextResponse.redirect(new URL("/login", req.url));
+  // }
 
   // Jika user sudah login dan mencoba masuk ke halaman login, arahkan ke dashboard
-  if (isAuthPage && session) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+
+  // if (isAuthPage && session) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
   return NextResponse.next();
 }

@@ -116,12 +116,12 @@ export default function DaftarMenu() {
       {loading ? (
         "Loading"
       ) : (
-        <section className="w-full p-8 bg-slate-900 rounded-md text-slate-200">
+        <section className="w-full p-8 rounded-md bg-neutral-50">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
               <Input
                 type="text"
-                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-slate-700 bg-slate-700 w-full pl-8 text-sm text-slate-300"
+                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 w-full pl-8 text-sm"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -171,7 +171,7 @@ export default function DaftarMenu() {
                   <TableRow
                     key={`${menu.id}${menuIndex + 1}`}
                     tabIndex={menuIndex}
-                    className="even:bg-slate-800 border-slate-600"
+                    className="even:bg-slate-200 border-slate-200"
                   >
                     <TableCell>
                       {(page - 1) * PAGE_SIZE + menuIndex + 1}

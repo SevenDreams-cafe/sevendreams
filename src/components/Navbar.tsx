@@ -31,20 +31,20 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const router = useRouter();
 
-  async function checkUser() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session) {
-      router.push("/login"); // Redirect ke halaman login jika tidak ada session
-    } else {
-      setUser({ id: session.user.id, email: session.user.email ?? "" });
-    }
-  }
+  // async function checkUser() {
+  //   const {
+  //     data: { session },
+  //   } = await supabase.auth.getSession();
+  //   if (!session) {
+  //     router.push("/login"); // Redirect ke halaman login jika tidak ada session
+  //   } else {
+  //     setUser({ id: session.user.id, email: session.user.email ?? "" });
+  //   }
+  // }
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+  // useEffect(() => {
+  //   checkUser();
+  // }, []);
 
   const handleLogout = async () => {
     localStorage.clear(); // Bersihkan semua data localStorage
@@ -57,19 +57,19 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   return (
     <>
       <header
-        className={`${karla.className} antialiased w-full fixed top-0 bg-slate-950 text-slate-200 h-20 items-center flex justify-between xl:justify-end pr-10 z-50`}
+        className={`${karla.className} antialiased w-full fixed top-0 bg-neutral-50 h-20 items-center flex justify-between xl:justify-end pr-10 z-50`}
       >
         {breakpoint < 1280 && (
           <button className="ml-5" onClick={() => setOpenSide(!openSide)}>
-            <HamburgerIcon className="w-3 h-3 fill-slate-300" />
+            <HamburgerIcon className="w-3 h-3 fill-neutral-800" />
           </button>
         )}
 
         <div className="flex items-center gap-x-4">
-          <Fullscreen />
           <button type="button" onClick={() => router.refresh()}>
-            <TimePastIcon className="w-5 h-5 fill-slate-200" />
+            <TimePastIcon className="w-5 h-5 fill-neutral-600" />
           </button>
+          <Fullscreen />
           <div className="relative w-auto z-[52]">
             <Button
               type="button"
@@ -87,15 +87,16 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
                 </div>
                 <div className="text-start">
                   <h5 className="font-semibold text-base">
-                    {String(user?.email).length > 20
+                    {/* {String(user?.email).length > 20
                       ? user?.email.substring(0, 15) + "..."
-                      : user?.email}
+                      : user?.email} */}
+                    Wahyudi Umar
                   </h5>
                   <h6 className="font-normal text-sm -mt-0.5">Administrator</h6>
                 </div>
               </div>
               <AngleSmallDownIcon
-                className={`w-5 mt-1.5 transition-transform fill-slate-200 ${
+                className={`w-5 mt-1.5 transition-transform fill-neutral-600 ${
                   !openDropdown ? "rotate-0" : "-rotate-180"
                 }`}
               />

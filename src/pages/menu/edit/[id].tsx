@@ -137,19 +137,19 @@ export default function EditMenu() {
   }
 
   return (
-    <section className="w-full p-8 bg-slate-900 text-slate-200 rounded-md mb-4">
+    <section className="w-full p-8 bg-neutral-50 rounded-md mb-4">
       <h2 className="text-lg font-bold">Edit Menu</h2>
       <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
         <div className="flex flex-col gap-y-4">
           {/* Pilih Kategori */}
           <div>
-            <Label className="text-sm text-slate-200">Kategori Menu</Label>
+            <Label className="text-sm ">Kategori Menu</Label>
             <Select
               name="tbl_categori"
               value={dataMenu?.tbl_categori?.id?.toString() || ""}
               onValueChange={handleChangeCategori}
             >
-              <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm duration-150 bg-slate-800 border-slate-600">
+              <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm duration-150  ">
                 <SelectValue placeholder="Pilih Kategori Makanan..." />
               </SelectTrigger>
               <SelectContent className="bg-white">
@@ -168,55 +168,55 @@ export default function EditMenu() {
           </div>
 
           <div>
-            <Label className="text-sm text-slate-200">Nama Menu</Label>
+            <Label className="text-sm ">Nama Menu</Label>
             <Input
               type="text"
               name="name"
               value={dataMenu?.name || ""}
               onChange={handleChange}
-              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150  "
             />
           </div>
 
           <div>
-            <Label className="text-sm text-slate-200">Harga Pokok</Label>
+            <Label className="text-sm ">Harga Pokok</Label>
             <Input
               type="number"
               name="harga_pokok"
               value={dataMenu?.harga_pokok || ""}
               onChange={handleChange}
-              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150  "
             />
           </div>
 
           <div>
-            <Label className="text-sm text-slate-200">Harga Jual</Label>
+            <Label className="text-sm ">Harga Jual</Label>
             <Input
               type="number"
               name="harga_jual"
               value={dataMenu?.harga_jual || ""}
               onChange={handleChange}
-              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150  "
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-y-4">
           <div>
-            <Label className="text-sm text-slate-200">Gambar</Label>
+            <Label className="text-sm ">Gambar</Label>
             <Input
               type="file"
               onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600 file:text-slate-200"
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150   file:"
               accept=".jpg,.jpeg,.png"
             />
           </div>
           <div>
-            <Label className="text-sm text-slate-200">Keterangan</Label>
+            <Label className="text-sm ">Keterangan</Label>
             <Textarea
               cols={3}
               rows={5}
-              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+              className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150  "
               placeholder="Masukkan keterangan menu..."
             />
           </div>

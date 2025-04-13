@@ -192,7 +192,7 @@ export default function Cashier() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 mt-6">
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-2 mt-6">
                 {filteredMenu.map((menu, menuIndex) => (
                   <MenuComponent
                     key={menuIndex}

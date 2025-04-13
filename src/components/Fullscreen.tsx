@@ -36,11 +36,11 @@ export function Fullscreen() {
     <>
       {fullscreen === false ? (
         <button type="button" onClick={toggleFullscreen}>
-          <ExpandIcon className="w-[18px] h-full fill-slate-200" />
+          <ExpandIcon className="w-[18px] h-full fill-neutral-800" />
         </button>
       ) : (
         <button type="button" onClick={toggleFullscreen}>
-          <OutscreenIcon className="w-[18px] h-full fill-slate-200" />
+          <OutscreenIcon className="w-[18px] h-full fill-neutral-800" />
         </button>
       )}
     </>

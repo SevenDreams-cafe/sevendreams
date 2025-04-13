@@ -79,12 +79,12 @@ export default function Stock() {
       {loading ? (
         "Loading"
       ) : (
-        <section className="w-full p-8 bg-slate-900 rounded-md text-slate-200">
+        <section className="w-full p-8 bg-neutral-50 rounded-md">
           <div className="flex items-center justify-end gap-x-5">
             <div className="flex items-center relative lg:w-1/4">
               <Input
                 type="text"
-                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border-slate-700 bg-slate-700 w-full pl-8 text-sm text-slate-300"
+                className="outline-none hover:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 w-full pl-8 text-sm"
                 placeholder="Search..."
                 value={searchStock}
                 onChange={(e) => setSearchStock(e.target.value)}
@@ -124,7 +124,7 @@ export default function Stock() {
                   <TableRow
                     key={`${menu.id}${menuIndex + 1}`}
                     tabIndex={menuIndex}
-                    className="even:bg-slate-800 border-slate-600"
+                    className="even:bg-neutral-200 border-neutral-200"
                   >
                     <TableCell>{menuIndex + 1}</TableCell>
                     <TableCell className="capitalize">{menu.name}</TableCell>

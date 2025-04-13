@@ -97,15 +97,15 @@ export default function TambahMenu() {
 
   return (
     <>
-      <section className="w-full p-8 bg-slate-900 rounded-md text-slate-200">
+      <section className="w-full p-8 bg-slate-50 rounded-md">
         <h2 className="text-lg font-bold">Tambah Menu</h2>
 
         <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-2 gap-6">
           <div className="flex flex-col gap-y-4">
             <div>
-              <Label className="text-sm text-slate-200">Kategori Menu</Label>
+              <Label className="text-sm ">Kategori Menu</Label>
               <Select onValueChange={(value) => setCategoriID(value)}>
-                <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm duration-150 bg-slate-800 border-slate-600">
+                <SelectTrigger className="border outline-none focus:ring-0 focus:ring-offset-0 mt-2 text-sm duration-150">
                   <SelectValue placeholder="Pilih Kategori Makanan..." />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
@@ -123,30 +123,30 @@ export default function TambahMenu() {
               </Select>
             </div>
             <div>
-              <Label className="text-sm text-slate-200">Nama Menu</Label>
+              <Label className="text-sm ">Nama Menu</Label>
               <Input
                 type="text"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150"
                 placeholder="Masukkan nama menu..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
-              <Label className="text-sm text-slate-200">Harga Pokok</Label>
+              <Label className="text-sm ">Harga Pokok</Label>
               <Input
                 type="number"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150"
                 placeholder="Masukkan harga pokok menu..."
                 value={hargaPokok}
                 onChange={(e) => setHargaPokok(e.target.value)}
               />
             </div>
             <div>
-              <Label className="text-sm text-slate-200">Harga Jual</Label>
+              <Label className="text-sm ">Harga Jual</Label>
               <Input
                 type="number"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150"
                 placeholder="Masukkan harga jual menu..."
                 value={hargaJual}
                 onChange={(e) => setHargaJual(e.target.value)}
@@ -155,20 +155,20 @@ export default function TambahMenu() {
           </div>
           <div className="flex flex-col gap-y-4">
             <div>
-              <Label className="text-sm text-slate-200">Gambar Menu</Label>
+              <Label className="text-sm ">Gambar Menu</Label>
               <Input
                 type="file"
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 text-slate-200 file:text-slate-200 border-slate-600 bg-slate-800"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm"
                 onChange={(e) => setImagesUrl(e.target.files?.[0] || null)}
                 accept=".jpg,.jpeg,.png"
               />
             </div>
             <div>
-              <Label className="text-sm text-slate-200">Keterangan</Label>
+              <Label className="text-sm ">Keterangan</Label>
               <Textarea
                 cols={3}
                 rows={5}
-                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150 bg-slate-800 border-slate-600"
+                className="border outline-none focus-visible:ring-0 focus-visible:ring-offset-0 mt-2 text-sm focus-visible:border-slate-500 duration-150"
                 placeholder="Masukkan keterangan menu.."
               />
             </div>

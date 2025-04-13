@@ -37,7 +37,7 @@ export default function Home() {
           <h2>Loading...</h2>
         </div>
       ) : (
-        <section className="bg-slate-900 text-slate-200 px-6 min-h-64 py-10 rounded-md lg:w-3/5">
+        <section className="bg-neutral-50 text-neutral-950 px-6 min-h-64 py-10 rounded-md lg:w-3/5">
           <JumbotronComponent userEmail={user?.email || ""} />
         </section>
       )}
