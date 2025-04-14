@@ -152,9 +152,9 @@ export default function Cashier() {
       {loading ? (
         "Loading"
       ) : (
-        <div className="flex flex-col lg:flex-row items-start gap-y-4 lg:gap-x-6">
+        <div className="flex flex-col md:flex-row items-start gap-y-4 md:gap-x-4 lg:gap-x-6">
           {/* Bagian Menu Kasir */}
-          <section className=" bg-neutral-50 rounded-md lg:w-3/5 items-start">
+          <section className=" bg-neutral-50 rounded-md w-full md:w-3/5 items-start">
             <div className="bg-blue-700 rounded-t-md py-3 px-4">
               <h2 className="font-bold text-neutral-50 text-lg">Kasir</h2>
             </div>
@@ -192,7 +192,7 @@ export default function Cashier() {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-2 mt-6">
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 mt-6">
                 {filteredMenu.map((menu, menuIndex) => (
                   <MenuComponent
                     key={menuIndex}
@@ -209,7 +209,7 @@ export default function Cashier() {
           </section>
 
           {/* Bagian Cek Transaksi */}
-          <section className="bg-neutral-50 rounded-md lg:w-2/5">
+          <section className="bg-neutral-50 rounded-md w-full md:w-2/5">
             <form onSubmit={(e) => handleTransaksi(e)}>
               <div className="bg-blue-700 rounded-t-md py-3 px-4">
                 <h2 className="font-bold text-neutral-50 text-lg">Transaksi</h2>

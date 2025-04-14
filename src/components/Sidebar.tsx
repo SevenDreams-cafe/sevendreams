@@ -17,6 +17,7 @@ import { DollyFlatbedIcon } from "./icons/DollyFlatbedIcon";
 import { FolderOpenIcon } from "./icons/FolderOpenIcon";
 import { GridIcon } from "./icons/GridIcon";
 import { ReportFolderIcon } from "./icons/ReportFolderIcon";
+import { SettingsIcon } from "./icons/SettingsIcon";
 import { UsersAltIcon } from "./icons/UsersAltIcon";
 
 interface HamburgerProps {
@@ -94,9 +95,9 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
                 <Link
                   onClick={() => setOpenSide(false)}
-                  href="/categori"
+                  href="/kategori"
                   className={`${
-                    pathname === "/categori" ? "font-semibold" : "font-normal"
+                    pathname === "/kategori" ? "font-semibold" : "font-normal"
                   } text-slate-200`}
                 >
                   Kategori
@@ -172,19 +173,36 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
         </li>
         <li
           className={`${
-            pathname === "/cashier" &&
+            pathname === "/kasir" &&
             "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
           } relative`}
         >
           <Link
             onClick={() => setOpenSide(false)}
-            href="/cashier"
+            href="/kasir"
             className={`${
-              pathname === "/cashier" ? "font-semibold" : "font-normal"
+              pathname === "/kasir" ? "font-semibold" : "font-normal"
             } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
           >
             <CashierIcon className="w-5 h-5 fill-slate-200" />
             Kasir
+          </Link>
+        </li>
+        <li
+          className={`${
+            pathname === "/settings" &&
+            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+          } relative`}
+        >
+          <Link
+            onClick={() => setOpenSide(false)}
+            href="/settings"
+            className={`${
+              pathname === "/settings" ? "font-semibold" : "font-normal"
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+          >
+            <SettingsIcon className="w-5 h-5 fill-slate-200" />
+            Settings
           </Link>
         </li>
         {role === "users" && (
