@@ -1,14 +1,22 @@
-import { Karla } from "next/font/google";
-import { Dispatch, useEffect, useState, type SetStateAction } from "react";
-import { useRouter } from "next/navigation";
+import { Dispatch } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { Karla } from "next/font/google";
+import { useRouter } from "next/navigation";
 import { Button } from "./shadcn/Button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./shadcn/DropdownMenu";
+import type { SetStateAction } from "react";
 
 import { Fullscreen } from "./Fullscreen";
 
 import { useWindowSize } from "@hooks/useWindowSize";
-import { supabase } from "@utils/supabase";
-import type { AuthUsers } from "@type/AuthUser";
+// import { supabase } from "@utils/supabase";
 
 import { AngleSmallDownIcon } from "./icons/AngleSmallDownIcon";
 import { HamburgerIcon } from "./icons/HamburgerIcon";
@@ -27,8 +35,7 @@ interface HamburgerProps {
 
 export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   const breakpoint = useWindowSize();
-  const [user, setUser] = useState<AuthUsers | null>(null);
-  const [openDropdown, setOpenDropdown] = useState(false);
+  // const [user, setUser] = useState<AuthUsers | null>(null);
   const router = useRouter();
 
   // async function checkUser() {
@@ -46,13 +53,13 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   //   checkUser();
   // }, []);
 
-  const handleLogout = async () => {
-    localStorage.clear(); // Bersihkan semua data localStorage
-    await supabase.auth.signOut();
-    const { data: session } = await supabase.auth.getSession();
-    console.log("Session after logout:", session); // Harus null
-    router.push("/login");
-  };
+  // const handleLogout = async () => {
+  //   localStorage.clear(); // Bersihkan semua data localStorage
+  //   await supabase.auth.signOut();
+  //   const { data: session } = await supabase.auth.getSession();
+  //   console.log("Session after logout:", session); // Harus null
+  //   router.push("/login");
+  // };
 
   return (
     <>
@@ -70,12 +77,8 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
             <TimePastIcon className="w-5 h-5 fill-neutral-600" />
           </button>
           <Fullscreen />
-          <div className="relative w-auto z-[52]">
-            <Button
-              type="button"
-              className="flex items-start h-auto gap-x-3 px-0"
-              onClick={() => setOpenDropdown(!openDropdown)}
-            >
+          <DropdownMenu>
+            <DropdownMenuTrigger className="relative w-auto z-[52] flex items-start h-auto gap-x-3 px-0 outline-none group">
               <div className="flex items-center gap-x-2">
                 <div className="relative w-10 h-10">
                   <Image
@@ -95,41 +98,35 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
                   <h6 className="font-normal text-sm -mt-0.5">Administrator</h6>
                 </div>
               </div>
-              <AngleSmallDownIcon
-                className={`w-5 mt-1.5 transition-transform fill-neutral-600 ${
-                  !openDropdown ? "rotate-0" : "-rotate-180"
-                }`}
-              />
-            </Button>
-            {openDropdown && (
-              <div className="min-h-20 p-4 absolute left-0 mt-5 w-full text-start rounded-md bg-neutral-50 flex flex-col gap-y-3 animate-dropdowns">
-                <button
-                  type="button"
-                  className="text-sm flex items-center gap-x-2 w-full text-neutral-700 group"
+              <AngleSmallDownIcon className="w-5 mt-1.5 transition-transform fill-neutral-600 group-data-[state=open]:rotate-180" />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="bg-neutral-50 mt-3 shadow-md min-w-40">
+              <DropdownMenuLabel className="mb-1 text-base">
+                Pengaturan
+              </DropdownMenuLabel>
+              <DropdownMenuItem className="py-0.5">
+                <Link
+                  href=""
+                  className="text-base flex items-center gap-2 text-neutral-700 group"
                 >
                   <UserGearIcon className="w-4 h-4 fill-neutral-600 group-hover:fill-neutral-950 transition-colors" />
                   Profile
-                </button>
-                <button
-                  type="button"
-                  className="text-sm flex items-center gap-x-2 w-full text-neutral-700 group"
-                  onClick={handleLogout}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-base flex items-center w-full text-neutral-700 py-0.5">
+                <Button
+                  variant="ghost"
+                  className="justify-start focus-visible:ring-0 ring-0 ring-offset-0 focus-visible:ring-offset-0 p-0 group"
                 >
                   <PowerIcon className="w-4 h-4 fill-neutral-600 group-hover:fill-neutral-950 transition-colors" />
                   Logout
-                </button>
-              </div>
-            )}
-          </div>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
-
-      {openDropdown && (
-        <button
-          className="fixed inset-0 z-40"
-          onClick={() => setOpenDropdown(false)}
-        />
-      )}
     </>
   );
 }
