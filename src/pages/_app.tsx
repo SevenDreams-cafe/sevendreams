@@ -9,11 +9,9 @@ import { Sidebar } from "@components/Sidebar";
 
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@components/shadcn/Breadcrumb";
 
@@ -63,45 +61,47 @@ export default function App({ Component, pageProps }: AppProps) {
             : "mx-auto"
         } transition-all`}
       >
-        <div className="flex justify-between items-start">
-          <h2 className="md:text-xl font-bold capitalize mb-6">
-            {segments[segments.length - 1] || "Home"}
-          </h2>
+        {!hideLayout && (
+          <div className="flex justify-between items-start">
+            <h2 className="md:text-xl font-bold capitalize mb-6">
+              {segments[segments.length - 1] || "Home"}
+            </h2>
 
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/">Dashboard</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
 
-              {segments.map((segment, index) => {
-                const href = "/" + segments.slice(0, index + 1).join("/");
-                const isLast = index === segments.length - 1;
+                {segments.map((segment, index) => {
+                  const href = "/" + segments.slice(0, index + 1).join("/");
+                  const isLast = index === segments.length - 1;
 
-                return (
-                  <div key={href} className="flex items-center gap-x-1.5">
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      {isLast ? (
-                        <span className="capitalize text-blue-700 font-bold">
-                          {segment}
-                        </span>
-                      ) : (
-                        <BreadcrumbLink asChild>
-                          <Link href={href} className="capitalize">
+                  return (
+                    <div key={href} className="flex items-center gap-x-1.5">
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        {isLast ? (
+                          <span className="capitalize text-blue-700 font-bold">
                             {segment}
-                          </Link>
-                        </BreadcrumbLink>
-                      )}
-                    </BreadcrumbItem>
-                  </div>
-                );
-              })}
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+                          </span>
+                        ) : (
+                          <BreadcrumbLink asChild>
+                            <Link href={href} className="capitalize">
+                              {segment}
+                            </Link>
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                    </div>
+                  );
+                })}
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        )}
         <Component {...pageProps} />
       </main>
     </>

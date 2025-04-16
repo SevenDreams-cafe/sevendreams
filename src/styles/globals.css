@@ -11,6 +11,10 @@ body,
   animation: dropdowns 0.1s ease-in-out;
 }
 
+::-webkit-calendar-picker-indicator {
+  @apply absolute right-2 text-lg;
+}
+
 @keyframes dropdowns {
   from {
     transform: scale(0);
