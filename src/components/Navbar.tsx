@@ -9,6 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./shadcn/DropdownMenu";
 import type { SetStateAction } from "react";
@@ -20,8 +21,9 @@ import { useWindowSize } from "@hooks/useWindowSize";
 
 import { AngleSmallDownIcon } from "./icons/AngleSmallDownIcon";
 import { HamburgerIcon } from "./icons/HamburgerIcon";
-import { TimePastIcon } from "./shadcn/TimePastIcon";
+import { NotificationIcon } from "./icons/NotificationIcon";
 import { PowerIcon } from "./icons/PowerIcon";
+import { TimePastIcon } from "./icons/TimePastIcon";
 import { UserGearIcon } from "./icons/UserGearIcon";
 
 export const karla = Karla({
@@ -73,8 +75,40 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
         )}
 
         <div className="flex items-center gap-x-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <NotificationIcon className="w-5 fill-neutral-700" />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              className="bg-neutral-50 mt-6 shadow-md absolute sm:right-0 min-w-80 px-0"
+              side="right"
+            >
+              <DropdownMenuLabel className="mb-1 text-base">
+                Notifikasi
+              </DropdownMenuLabel>
+              <DropdownMenuItem className="py-0.5 px-0">
+                <Link
+                  href=""
+                  className="text-base flex items-start gap-2 text-neutral-700 px-3 justify-between group py-2 hover:bg-neutral-200/50 transition-colors w-full"
+                >
+                  <div className=" flex flex-col gap-y-2">
+                    <h5 className="text-sm">Management Users - Anshari</h5>
+                    <h3>Menambahkan data user baru</h3>
+                  </div>
+                  <span className="text-sm font-bold">3 menit</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="border-t" />
+              <DropdownMenuItem className="text-base py-2">
+                <Link href="" className="flex justify-center w-full">
+                  View All
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <button type="button" onClick={() => router.refresh()}>
-            <TimePastIcon className="w-5 h-5 fill-neutral-600" />
+            <TimePastIcon className="w-5 h-5 fill-neutral-700" />
           </button>
           <Fullscreen />
           <DropdownMenu>
