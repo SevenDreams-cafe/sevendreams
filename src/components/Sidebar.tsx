@@ -11,7 +11,7 @@ import {
 
 import { supabase } from "@utils/supabase";
 
-import SevenDreamsImage from "@public/sevendreams-white.png";
+import SevenDreamsImage from "@public/sevendreams1.jpg";
 import { CashierIcon } from "./icons/CashierIcon";
 import { DollyFlatbedIcon } from "./icons/DollyFlatbedIcon";
 import { FolderOpenIcon } from "./icons/FolderOpenIcon";
@@ -53,22 +53,22 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
   return (
     <aside
       className={`${
-        openSide ? "left-0 xl:-left-[280px]" : "-left-[280px] xl:left-0"
-      } bg-slate-900 fixed top-0 z-50 h-full w-[280px] transition-all overflow-y-auto text-sm lg:text-base`}
+        openSide ? "left-0 xl:-left-[260px]" : "-left-[260px] xl:left-0"
+      } bg-white fixed top-0 z-50 h-full w-[260px] transition-all overflow-y-auto text-sm lg:text-base`}
     >
-      <div className="mx-5 mt-5">
+      <div className="mx-5 mt-10">
         <Image
           src={SevenDreamsImage}
           alt="7 Dreams"
-          className="w-36 object-contain"
+          className="w-full object-contain mx-auto"
         />
       </div>
 
-      <ul className="mt-12">
+      <ul className="mt-8">
         <li
           className={`${
             pathname === "/" &&
-            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+            "before:px-0 bg-neutral-300/50 before:w-1 before:h-full before:absolute before:bg-[#624BFF]"
           } relative`}
         >
           <Link
@@ -76,9 +76,9 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
             href="/"
             className={`${
               pathname === "/" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-800`}
           >
-            <GridIcon className="w-5 h-5 fill-slate-200" />
+            <GridIcon className="w-5 h-5 fill-[#624BFF]" />
             Dashboard
           </Link>
         </li>
@@ -88,7 +88,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
               value="master-data"
               className="border-b-0 outline-none"
             >
-              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-slate-200 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-slate-200">
+              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-[#624BFF] [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-[#624BFF] font-normal text-neutral-800">
                 <FolderOpenIcon className="folderOpen w-5 h-5" />
                 <span>Master Data</span>
               </AccordionTrigger>
@@ -98,7 +98,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href="/kategori"
                   className={`${
                     pathname === "/kategori" ? "font-semibold" : "font-normal"
-                  } text-slate-200`}
+                  } text-neutral-800`}
                 >
                   Kategori
                 </Link>
@@ -107,7 +107,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href="/menu"
                   className={`${
                     pathname === "/menu" ? "font-semibold" : "font-normal"
-                  } text-slate-200`}
+                  } text-neutral-800`}
                 >
                   Daftar Menu
                 </Link>
@@ -116,7 +116,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
           </li>
           <li rel="Report Collapse">
             <AccordionItem value="report" className="border-b-0 outline-none">
-              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-slate-200 [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-neutral-200 font-normal text-slate-200">
+              <AccordionTrigger className="hover:no-underline justify-start py-3 gap-x-2 [&>svg]:fill-[#624BFF] [&>svg.chevronIcon]:absolute [&>svg.chevronIcon]:right-5 [&[data-state='open']]:font-semibold [&[data-state='open']>.folderOpen]:fill-[#624BFF] font-normal text-neutral-800">
                 <ReportFolderIcon className="folderOpen w-5 h-5" />
                 <span>Laporan</span>
               </AccordionTrigger>
@@ -126,7 +126,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href=""
                   className={`${
                     pathname === "/transaksi" ? "font-semibold" : "font-normal"
-                  } text-slate-200`}
+                  } text-neutral-800`}
                 >
                   Transaksi Penjualan
                 </Link>
@@ -137,7 +137,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                     pathname === "/history-menu"
                       ? "font-semibold"
                       : "font-normal"
-                  } text-slate-200`}
+                  } text-neutral-800`}
                 >
                   History Per Menu
                 </Link>
@@ -146,7 +146,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                   href=""
                   className={`${
                     pathname === "/cash-flow" ? "font-semibold" : "font-normal"
-                  } text-slate-200`}
+                  } text-neutral-800`}
                 >
                   Cash Flow
                 </Link>
@@ -157,7 +157,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
         <li
           className={`${
             pathname === "/menu/stock" &&
-            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+            "before:px-0 bg-neutral-300/50 before:w-1 before:h-full before:absolute before:bg-[#624BFF]"
           } relative`}
         >
           <Link
@@ -165,16 +165,16 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
             href="/menu/stock"
             className={`${
               pathname === "/menu/stock" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-800`}
           >
-            <DollyFlatbedIcon className="w-5 h-5 fill-slate-200" />
+            <DollyFlatbedIcon className="w-5 h-5 fill-[#624BFF]" />
             Stock
           </Link>
         </li>
         <li
           className={`${
             pathname === "/kasir" &&
-            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+            "before:px-0 bg-neutral-300/50 before:w-1 before:h-full before:absolute before:bg-[#624BFF]"
           } relative`}
         >
           <Link
@@ -182,16 +182,16 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
             href="/kasir"
             className={`${
               pathname === "/kasir" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-800`}
           >
-            <CashierIcon className="w-5 h-5 fill-slate-200" />
+            <CashierIcon className="w-5 h-5 fill-[#624BFF]" />
             Kasir
           </Link>
         </li>
         <li
           className={`${
             pathname === "/settings" &&
-            "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+            "before:px-0 bg-neutral-300/50 before:w-1 before:h-full before:absolute before:bg-[#624BFF]"
           } relative`}
         >
           <Link
@@ -199,9 +199,9 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
             href="/settings"
             className={`${
               pathname === "/settings" ? "font-semibold" : "font-normal"
-            } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+            } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-800`}
           >
-            <SettingsIcon className="w-5 h-5 fill-slate-200" />
+            <SettingsIcon className="w-5 h-5 fill-[#624BFF]" />
             Settings
           </Link>
         </li>
@@ -209,7 +209,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
           <li
             className={`${
               pathname === "/management-users" &&
-              "before:px-0 bg-slate-500/50 before:w-1 before:h-full before:absolute before:bg-slate-500"
+              "before:px-0 bg-neutral-300/50 before:w-1 before:h-full before:absolute before:bg-[#624BFF]"
             } relative`}
           >
             <Link
@@ -219,9 +219,9 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
                 pathname === "/management-users"
                   ? "font-semibold"
                   : "font-normal"
-              } flex items-center gap-x-2 px-6 py-3 rounded-md text-slate-200`}
+              } flex items-center gap-x-2 px-6 py-3 rounded-md text-neutral-800`}
             >
-              <UsersAltIcon className="w-5 h-5 fill-slate-200" />
+              <UsersAltIcon className="w-5 h-5 fill-[#624BFF]" />
               Management Users
             </Link>
           </li>

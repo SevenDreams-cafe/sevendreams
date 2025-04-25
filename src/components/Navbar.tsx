@@ -76,7 +76,8 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
 
         <div className="flex items-center gap-x-4">
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="outline-none relative">
+              <span className="w-2.5 h-2.5 block absolute rounded-full bg-red-500 right-0.5 " />
               <NotificationIcon className="w-5 fill-neutral-700" />
             </DropdownMenuTrigger>
 
