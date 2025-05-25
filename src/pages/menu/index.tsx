@@ -48,7 +48,7 @@ export default function DaftarMenu() {
       }
 
       setDataMenu(data || []);
-      setTotalPages(Math.ceil((count || 0) / PAGE_SIZE));
+      setTotalPages(Math.ceil((count || 1) / PAGE_SIZE));
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {

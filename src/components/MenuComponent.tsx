@@ -6,6 +6,7 @@ interface MenuComponentProps {
   images: string;
   name: string;
   hargaJual: number;
+  hargaPokok: number;
   setDataTransaksi: Dispatch<SetStateAction<TransaksiProps[]>>;
 }
 
@@ -14,6 +15,7 @@ interface TransaksiProps {
   name: string;
   harga: number;
   jumlah: number;
+  grand_modal: number;
 }
 
 export function MenuComponent({
@@ -22,6 +24,7 @@ export function MenuComponent({
   images = "",
   name = "",
   hargaJual = 0,
+  hargaPokok = 0,
   setDataTransaksi,
 }: MenuComponentProps) {
   function handleAddToTransaction(menu: TransaksiProps) {
@@ -48,6 +51,7 @@ export function MenuComponent({
           name: name,
           harga: hargaJual,
           jumlah: 1,
+          grand_modal: hargaPokok,
         })
       }
     >

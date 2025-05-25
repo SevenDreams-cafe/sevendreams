@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { Navbar } from "@components/Navbar";
 import { Sidebar } from "@components/Sidebar";
 
+import { useWindowSize } from "@hooks/useWindowSize";
+
 import { supabase } from "@utils/supabase";
 
 import {
@@ -21,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter(); // Gunakan useRouter untuk cek path
   const [openSideBar, setOpenSideBar] = useState(false);
   const [title, setTitle] = useState("");
+  const useResize = useWindowSize();
 
   // Halaman yang tidak memerlukan Navbar & Sidebar
   const hideLayout = ["/login", "/signup", "/cetak-struk"].includes(
@@ -61,7 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Navbar openSide={openSideBar} setOpenSide={setOpenSideBar} />
           <Sidebar openSide={openSideBar} setOpenSide={setOpenSideBar} />
 
-          {openSideBar && (
+          {useResize < 1280 && openSideBar && (
             <button
               onClick={() => setOpenSideBar(false)}
               className="bg-neutral-950/40 fixed animate-in inset-0 z-40"
@@ -72,12 +75,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <div className={`mt-0 h-48 block ${!hideLayout && "bg-[#624BFF]"}`}>
         <main
-          className={`${
+          className={` ${
             openSideBar
-              ? "mx-5"
+              ? "mx-5 mt-20 pt-[50px]"
               : !hideLayout
-              ? "xl:ml-[280px] mx-5 xl:mr-[20px] mt-[80px] pt-[50px]"
-              : "mx-auto"
+              ? "xl:ml-[280px] mx-5 xl:mr-[20px] mt-20 pt-[50px]"
+              : "mx-auto mt-0 pt-0"
           } transition-all`}
         >
           {!hideLayout && (

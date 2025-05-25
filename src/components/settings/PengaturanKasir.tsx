@@ -24,7 +24,7 @@ export function PengaturanKasir() {
   const [start_kasir, setStartKasir] = useState("");
   const [end_kasir, setEndKasir] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -56,7 +56,7 @@ export function PengaturanKasir() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setLoading(true);
+    // setLoading(true);
 
     const { data: pengaturanUser } = await supabase
       .from("tbl_pengaturankasir")
@@ -66,7 +66,7 @@ export function PengaturanKasir() {
       .from("tbl_kasirlogin")
       .upsert({ id: 1, start_kasir, end_kasir });
 
-    setLoading(false);
+    // setLoading(false);
 
     if (pengaturanUser || kasirlogin) {
       alert("Data gagal ditambahkan");

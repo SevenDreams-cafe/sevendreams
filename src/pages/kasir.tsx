@@ -23,6 +23,7 @@ interface TransaksiProps {
   name: string;
   harga: number;
   jumlah: number;
+  grand_modal: number;
 }
 
 interface DataCategoriProps {
@@ -109,20 +110,42 @@ export default function Cashier() {
 
     const kembalian = isBayar - checkoutTransaksi;
 
+    // Data Total Modal
+    const grandModal = dataTransaksi.reduce((total, item) => {
+      return total + item.grand_modal * item.jumlah;
+    }, 0);
+
     try {
-      const { error } = await supabase.from("tbl_transaksi").insert([
-        {
-          grand_total: checkoutTransaksi,
-          dibayar: isBayar,
-          kembalian,
-          customers: customers,
-        },
-      ]);
+      const { data: transaksi, error } = await supabase
+        .from("tbl_transaksi")
+        .insert([
+          {
+            grand_total: checkoutTransaksi,
+            grand_modal: grandModal,
+            dibayar: isBayar,
+            kembalian,
+            customers: customers,
+          },
+        ])
+        .select();
 
       if (error) throw error;
 
-      const transaksiDetail = dataTransaksi.map((item, itemIndex) => ({
-        id_transaksi: itemIndex + 1,
+      const transaksiID = transaksi[0].id;
+
+      // Data Kode Acak
+      // const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+      const kodeRandom = `${String(transaksiID).padStart(4, "0")}`; // Contoh datanya nanti 00200
+
+      const { error: updateError } = await supabase
+        .from("tbl_transaksi")
+        .update({ kode: kodeRandom })
+        .eq("id", transaksiID);
+
+      if (updateError) throw error;
+
+      const transaksiDetail = dataTransaksi.map((item) => ({
+        kd_transaksi: kodeRandom,
         id_menu: item.id,
         jumlah: item.jumlah,
         harga: item.harga,
@@ -200,6 +223,7 @@ export default function Cashier() {
                     menuID={menu.id}
                     name={menu.name}
                     hargaJual={menu.harga_jual}
+                    hargaPokok={menu.harga_pokok}
                     images={menu.image_url}
                     setDataTransaksi={setDataTransaksi}
                   />

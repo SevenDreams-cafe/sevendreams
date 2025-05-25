@@ -138,7 +138,7 @@ export default function Categori() {
                   <TableRow
                     key={categori.id}
                     tabIndex={index}
-                    className="even:bg-slate-800 border-slate-600"
+                    className="even:bg-slate-200 border-slate-200"
                   >
                     <TableCell>{(page - 1) * PAGE_SIZE + index + 1}</TableCell>
                     <TableCell>{categori.name}</TableCell>

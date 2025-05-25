@@ -123,9 +123,9 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
               <AccordionContent className="flex flex-col ml-7 gap-y-3">
                 <Link
                   onClick={() => setOpenSide(false)}
-                  href=""
+                  href="/laporan/"
                   className={`${
-                    pathname === "/transaksi" ? "font-semibold" : "font-normal"
+                    pathname === "/laporan/" ? "font-semibold" : "font-normal"
                   } text-neutral-800`}
                 >
                   Transaksi Penjualan
