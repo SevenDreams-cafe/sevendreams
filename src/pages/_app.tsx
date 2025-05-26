@@ -62,9 +62,11 @@ export default function App({ Component, pageProps }: AppProps) {
       {!hideLayout && (
         <>
           <Navbar openSide={openSideBar} setOpenSide={setOpenSideBar} />
-          <Sidebar openSide={openSideBar} setOpenSide={setOpenSideBar} />
+          {useResize < 1024 && (
+            <Sidebar openSide={openSideBar} setOpenSide={setOpenSideBar} />
+          )}
 
-          {useResize < 1280 && openSideBar && (
+          {useResize < 1024 && openSideBar && (
             <button
               onClick={() => setOpenSideBar(false)}
               className="bg-neutral-950/40 fixed animate-in inset-0 z-40"
@@ -79,7 +81,7 @@ export default function App({ Component, pageProps }: AppProps) {
             openSideBar
               ? "mx-5 mt-20 pt-[50px]"
               : !hideLayout
-              ? "xl:ml-[280px] mx-5 xl:mr-[20px] mt-20 pt-[50px]"
+              ? "mx-5 mt-20 pt-[50px]"
               : "mx-auto mt-0 pt-0"
           } transition-all`}
         >

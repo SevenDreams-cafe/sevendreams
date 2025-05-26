@@ -19,6 +19,7 @@ import { Fullscreen } from "./Fullscreen";
 import { useWindowSize } from "@hooks/useWindowSize";
 // import { supabase } from "@utils/supabase";
 
+import SevenDreamsImage from "@public/sevendreams.png";
 import { AngleSmallDownIcon } from "./icons/AngleSmallDownIcon";
 import { HamburgerIcon } from "./icons/HamburgerIcon";
 import { NotificationIcon } from "./icons/NotificationIcon";
@@ -66,21 +67,82 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   return (
     <>
       <header
-        className={`${karla.className} antialiased w-full fixed top-0 bg-neutral-50 h-20 items-center flex justify-between pr-10 z-50`}
+        className={`${karla.className} antialiased w-full fixed top-0 bg-white h-20 items-center flex justify-between px-5 lg:px-10 z-50`}
       >
-        {breakpoint < 1280 && (
+        {breakpoint < 1024 && (
           <button className="ml-5" onClick={() => setOpenSide(!openSide)}>
             <HamburgerIcon className="w-3 h-3 fill-neutral-800" />
           </button>
         )}
 
-        {breakpoint > 1280 && (
-          <button
-            className={`duration-200 ${!openSide ? "ml-[280px]" : "ml-4"}`}
-            onClick={() => setOpenSide(!openSide)}
-          >
-            <HamburgerIcon className="w-3 h-3 fill-neutral-800" />
-          </button>
+        {breakpoint > 1024 && (
+          <div>
+            <Image
+              src={SevenDreamsImage}
+              alt="Seven Dream Icon"
+              className="w-[150px]"
+            />
+          </div>
+        )}
+
+        {breakpoint > 1024 && (
+          <div>
+            <ul className="flex items-center lg:gap-x-6 xl:gap-x-8">
+              <li>
+                <Link href="/" className={`${karla.className}`}>
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none">
+                    Master Data
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent className="bg-white mt-2">
+                    <DropdownMenuItem>
+                      <Link href="/kategori">Data Kategori</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/menu/">Data Menu</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </li>
+              <li>
+                <Link href="/menu/stock">Stok</Link>
+              </li>
+              <li>
+                <Link href="/kasir" className={`${karla.className}`}>
+                  Kasir
+                </Link>
+              </li>
+              <li>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none">
+                    Laporan
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent className="bg-white mt-2">
+                    <DropdownMenuItem>
+                      <Link href="/laporan/">Transaksi Penjualan</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="#">History Menu</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="#">Cash Flow</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </li>
+              <li>
+                <Link href="" className={`${karla.className}`}>
+                  Pengaturan
+                </Link>
+              </li>
+            </ul>
+          </div>
         )}
 
         <div className="flex items-center gap-x-4">
