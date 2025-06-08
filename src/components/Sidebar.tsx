@@ -54,7 +54,7 @@ export function Sidebar({ openSide = false, setOpenSide }: HamburgerProps) {
     <aside
       className={`${
         openSide ? "left-0 xl:-left-[260px]" : "-left-[260px] xl:left-0"
-      } bg-white fixed top-0 z-50 h-full w-[260px] transition-all overflow-y-auto text-sm lg:text-base`}
+      } bg-white fixed top-0 z-50 h-full w-[260px] transition-all overflow-y-auto text-sm lg:text-base block lg:hidden`}
     >
       <div className="mx-5 mt-10">
         <Image

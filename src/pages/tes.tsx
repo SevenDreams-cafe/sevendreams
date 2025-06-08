@@ -1,8 +1,7 @@
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
-import { Button } from "@components/shadcn/Button";
+
 import { Input } from "@components/shadcn/Input";
-import { Label } from "@components/shadcn/Label";
 import {
   Select,
   SelectContent,
@@ -15,8 +14,11 @@ import {
 import { MenuProps } from "@type/menu";
 import { supabase } from "@utils/supabase";
 
+import { TransaksiDialog } from "@components/TransaksiDialog";
+
 import { MenuComponent } from "@components/MenuComponent";
 import { SearchIcon } from "@components/icons/SearchIcon";
+import { TrashIcon } from "@components/icons/TrashIcon";
 
 interface TransaksiProps {
   id: number;
@@ -175,7 +177,7 @@ export default function Cashier() {
       ) : (
         <div className="flex flex-col md:flex-row items-start gap-y-4 md:gap-x-4 lg:gap-x-6">
           {/* Bagian Menu Kasir */}
-          <section className=" bg-neutral-50 rounded-md w-full md:w-[60%] xl:w-[70%] items-start">
+          <section className=" bg-neutral-50 rounded-md w-full md:w-[55%] xl:w-[65%] items-start">
             <div className="bg-blue-700 rounded-t-md py-3 px-4">
               <h2 className="font-bold text-neutral-50 text-lg">Kasir</h2>
             </div>
@@ -231,14 +233,46 @@ export default function Cashier() {
           </section>
 
           {/* Bagian Cek Transaksi */}
-          <section className="bg-neutral-50 rounded-md w-full md:w-[40%] xl:w-[30%]">
+          <section className="bg-neutral-50 rounded-md w-full md:w-[45%] xl:w-[35%]">
             <form onSubmit={(e) => handleTransaksi(e)}>
               <div className="bg-blue-700 rounded-t-md py-3 px-4">
                 <h2 className="font-bold text-neutral-50 text-lg">Transaksi</h2>
               </div>
 
-              <div className="px-2 py-4">
-                <div>
+              <div className="py-4">
+                <table className="w-full border-spacing-2 border-separate">
+                  <tbody>
+                    {dataTransaksi.map((transaksi, transaksiIndex) => (
+                      <tr key={`${transaksi.id}${transaksiIndex + 1}`}>
+                        <td className="text-sm font-bold flex">
+                          {transaksi.jumlah}x
+                        </td>
+                        <td className="text-sm">
+                          <h4 className="font-bold">{transaksi.name}</h4>
+                          <h6>00{transaksi.id}</h6>
+                        </td>
+                        <td className="text-center w-20 text-sm font-bold">
+                          {transaksi.harga.toLocaleString()}
+                        </td>
+                        <td className="mt-3 text-end w-5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setDataTransaksi((prev) =>
+                                prev.filter((item) => item.id !== transaksi.id)
+                              )
+                            }
+                            className="w-5"
+                          >
+                            {<TrashIcon className="w-4 fill-red-600" />}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {/* <div>
                   <Label className="after:content-['*'] after:ml-0.5 after:text-red-500">
                     Customer
                   </Label>
@@ -250,91 +284,7 @@ export default function Cashier() {
                     onChange={(e) => setCustomers(e.target.value)}
                     required
                   />
-                </div>
-
-                <div className="mt-6">
-                  <h6 className="text-sm">List Keranjang</h6>
-
-                  <table className="w-full text-xs mt-2">
-                    <thead>
-                      <tr className="[&>th]:text-start border-t border-b h-6">
-                        <th className="w-6">#</th>
-                        <th className="w-32">Nama</th>
-                        <th className="w-28">Jumlah</th>
-                        <th className="w-24">Harga</th>
-                        <th className="w-10">#</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dataTransaksi.map((transaksi, transaksiIndex) => (
-                        <tr
-                          className="text-start"
-                          key={`${transaksi.id}${transaksiIndex + 1}`}
-                        >
-                          <td>{transaksiIndex + 1}</td>
-                          <td>{transaksi.name}</td>
-                          <td>
-                            <div className="flex items-center gap-x-2">
-                              <button
-                                type="button"
-                                className="px-1.5 py-0.5 rounded-sm h-auto bg-red-600 text-neutral-50 flex items-center justify-center"
-                                onClick={() =>
-                                  setDataTransaksi((prev) =>
-                                    prev
-                                      .map((item) =>
-                                        item.id === transaksi.id
-                                          ? { ...item, jumlah: item.jumlah - 1 }
-                                          : item
-                                      )
-                                      .filter((item) => item.jumlah > 0)
-                                  )
-                                }
-                              >
-                                {"-"}
-                              </button>
-                              <Input
-                                type="number"
-                                className="border w-14 outline-none text-center focus-visible:ring-0 focus-visible:ring-offset-0 mt-1 text-sm focus-visible:border-blue-500 duration-150 text-neutral-600 h-auto py-2 disabled:bg-neutral-200 disabled:text-neutral-950 disabled:font-bold"
-                                value={transaksi.jumlah}
-                                disabled
-                              />
-                              <button
-                                type="button"
-                                className="px-1.5 py-0.5 rounded-sm h-auto bg-green-600 text-neutral-50 flex items-center justify-center"
-                                onClick={() =>
-                                  setDataTransaksi((prev) =>
-                                    prev.map((item) =>
-                                      item.id === transaksi.id
-                                        ? { ...item, jumlah: item.jumlah + 1 }
-                                        : item
-                                    )
-                                  )
-                                }
-                              >
-                                {"+"}
-                              </button>
-                            </div>
-                          </td>
-                          <td>{transaksi.harga.toLocaleString()}</td>
-                          <td>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setDataTransaksi((prev) =>
-                                  prev.filter(
-                                    (item) => item.id !== transaksi.id
-                                  )
-                                )
-                              }
-                            >
-                              x
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                </div> */}
               </div>
 
               <div className="border-y mb-6 px-4 py-2 flex items-center justify-between">
@@ -344,30 +294,35 @@ export default function Cashier() {
                 </div>
               </div>
 
-              <div className="grid gap-y-3 px-4 lg:px-10 pb-4 text-sm font-extrabold">
-                <div className="flex justify-between flex-wrap">
+              <div className="grid gap-y-3 px-4 pb-4 text-sm">
+                <div className="flex justify-between flex-wrap font-bold">
                   <h6>Sub Total</h6>
-                  <div className="relative">
-                    <h6>{checkoutTransaksi.toLocaleString()}</h6>
-                  </div>
+                  <h6>{checkoutTransaksi.toLocaleString()}</h6>
                 </div>
-                <hr className="border" />
+
+                <div className="flex justify-between flex-wrap">
+                  <h6>Diskon</h6>
+                  <h6>{checkTax.toLocaleString()}</h6>
+                </div>
+
                 <div className="flex justify-between flex-wrap">
                   <h6>Pajak</h6>
-                  <div className="relative">
-                    <h6>{checkTax.toLocaleString()}</h6>
-                  </div>
+                  <h6>{checkTax.toLocaleString()}</h6>
+                </div>
+
+                <div className="flex justify-between flex-wrap mt-2 text-xl font-extrabold">
+                  <h6>Total</h6>
+                  <h6>{(checkoutTransaksi - checkTax).toLocaleString()}</h6>
                 </div>
               </div>
 
               <div className="px-2 pb-3">
-                <Button
-                  type="submit"
-                  variant="destructive"
-                  className="bg-green-600 hover:bg-green-700 duration-150 w-full py-2 px-2 text-sm h-auto text-neutral-50"
-                >
-                  {(checkoutTransaksi - checkTax).toLocaleString()}
-                </Button>
+                <TransaksiDialog
+                  customers={customers}
+                  dibayar={isBayar}
+                  setCustomers={setCustomers}
+                  setDibayar={setBayar}
+                />
               </div>
             </form>
           </section>

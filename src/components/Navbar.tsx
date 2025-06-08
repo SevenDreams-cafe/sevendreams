@@ -71,7 +71,10 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
         className={`${karla.className} antialiased w-full fixed top-0 bg-white h-20 items-center flex justify-between px-5 lg:px-10 z-50`}
       >
         {breakpoint < 1024 && (
-          <button className="ml-5" onClick={() => setOpenSide(!openSide)}>
+          <button
+            className="ml-5 lg:hidden"
+            onClick={() => setOpenSide(!openSide)}
+          >
             <HamburgerIcon className="w-3 h-3 fill-neutral-800" />
           </button>
         )}
@@ -88,7 +91,7 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
 
         {breakpoint > 1024 && (
           <div>
-            <ul className="flex items-center lg:gap-x-6 xl:gap-x-8">
+            <ul className="hidden lg:flex items-center lg:gap-x-6 xl:gap-x-8">
               <li>
                 <Link
                   href="/"
