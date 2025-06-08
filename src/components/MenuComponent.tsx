@@ -55,15 +55,17 @@ export function MenuComponent({
         })
       }
     >
-      <div className="relative h-36 w-full overflow-hidden top-0">
+      <div className="relative h-36 bg-black w-full mt-0">
         <img src={images} alt="Bakso" className="object-cover w-full h-full" />
       </div>
-      <div className="mt-2 text-center absolute bg-neutral-900/70 w-full bottom-0 py-2">
-        <h5 className="text-sm font-bold px-2 text-neutral-50">{name}</h5>
-        {/* <h6 className="text-sm font-bold text-green-600 mt-1">
+
+      <h5 className="text-sm font-bold px-2 py-4">{name}</h5>
+      {/* <div className="mt-2 text-center absolute bg-neutral-900/70 w-full bottom-0 py-2"> */}
+      {/* <h5 className="text-sm font-bold px-2 text-neutral-50">{name}</h5> */}
+      {/* <h6 className="text-sm font-bold text-green-600 mt-1">
           {hargaJual.toLocaleString()}
         </h6> */}
-      </div>
+      {/* </div> */}
     </button>
   );
 }

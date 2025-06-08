@@ -2,6 +2,7 @@ import { Dispatch } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Karla } from "next/font/google";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Button } from "./shadcn/Button";
 import {
@@ -15,7 +16,6 @@ import {
 import type { SetStateAction } from "react";
 
 import { Fullscreen } from "./Fullscreen";
-
 import { useWindowSize } from "@hooks/useWindowSize";
 // import { supabase } from "@utils/supabase";
 
@@ -39,6 +39,7 @@ interface HamburgerProps {
 export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
   const breakpoint = useWindowSize();
   // const [user, setUser] = useState<AuthUsers | null>(null);
+  const pathname = usePathname();
   const router = useRouter();
 
   // async function checkUser() {
@@ -89,7 +90,12 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
           <div>
             <ul className="flex items-center lg:gap-x-6 xl:gap-x-8">
               <li>
-                <Link href="/" className={`${karla.className}`}>
+                <Link
+                  href="/"
+                  className={`${karla.className} ${
+                    pathname === "/" && "font-bold"
+                  }`}
+                >
                   Dashboard
                 </Link>
               </li>
@@ -137,7 +143,7 @@ export function Navbar({ openSide = false, setOpenSide }: HamburgerProps) {
                 </DropdownMenu>
               </li>
               <li>
-                <Link href="" className={`${karla.className}`}>
+                <Link href="/settings" className={`${karla.className}`}>
                   Pengaturan
                 </Link>
               </li>

@@ -62,7 +62,9 @@ export default function App({ Component, pageProps }: AppProps) {
       {!hideLayout && (
         <>
           <Navbar openSide={openSideBar} setOpenSide={setOpenSideBar} />
-          {useResize < 1024 && (
+          {useResize > 1024 ? (
+            <></>
+          ) : (
             <Sidebar openSide={openSideBar} setOpenSide={setOpenSideBar} />
           )}
 
