@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 import { Button } from "@components/shadcn/Button";
 import { Input } from "@components/shadcn/Input";
@@ -22,6 +23,7 @@ interface TransaksiDetailProps {
   id_menu: number;
   jumlah: number;
   harga: number;
+  kd_transaksi: string;
 }
 
 interface TransaksiProps {
@@ -51,7 +53,7 @@ export default function Transaksi() {
       const { data, count, error } = await supabase
         .from("tbl_transaksi")
         .select(
-          `id, created_at, kode, grand_total, grand_modal, dibayar, kembalian, customers, tbl_transaksi_detail (id, id_menu, jumlah, harga)`,
+          `id, created_at, kode, grand_total, grand_modal, dibayar, kembalian, customers, tbl_transaksi_detail (id, kd_transaksi, id_menu, jumlah, harga)`,
           { count: "exact" }
         )
         .range(from, to);
@@ -73,7 +75,7 @@ export default function Transaksi() {
     fetchTransaksi();
   }, [page]);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (kode: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "Deleted data cannot be recovered!",
@@ -85,17 +87,26 @@ export default function Transaksi() {
     }).then(async (result) => {
       try {
         if (result.isConfirmed) {
+          const { error: detailTransaksi } = await supabase
+            .from("tbl_transaksi_detail")
+            .delete()
+            .eq("kd_transaksi", kode);
+
+          if (detailTransaksi) {
+            throw detailTransaksi;
+          }
+
           const { error } = await supabase
             .from("tbl_transaksi")
             .delete()
-            .eq("id", id);
+            .eq("kode", kode);
 
           if (error) {
             throw error;
           }
 
           // Hapus dari state lokal setelah berhasil dihapus dari Supabase
-          setDataTransaksi((prev) => prev.filter((item) => item.id !== id));
+          setDataTransaksi((prev) => prev.filter((item) => item.kode !== kode));
 
           // Sweatalert ketika data sukses di hapus
           Swal.fire({
@@ -178,23 +189,40 @@ export default function Transaksi() {
                         {date.toLocaleDateString("id-ID").split("T")[0]}{" "}
                         {date.toLocaleTimeString("id-ID").split("T")[0]}
                       </TableCell>
-                      <TableCell className="text-center">20</TableCell>
-                      <TableCell className="text-center">Rp 50,000</TableCell>
-                      <TableCell className="text-center">Rp 50,000</TableCell>
                       <TableCell className="text-center">
-                        <Button
-                          variant="secondary"
-                          type="button"
-                          className="w-auto inline-block bg-blue-500 text-neutral-50 px-3 py-1.5 h-auto text-xs xl:text-sm rounded-md"
+                        {transaksi.tbl_transaksi_detail.reduce(
+                          (total, detail) => total + detail.jumlah,
+                          0
+                        )}
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        Rp {transaksi.grand_modal.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        Rp {transaksi.grand_total.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Link
+                          href={{
+                            pathname: "./laporan/order/[kode]",
+                            query: { kode: transaksi.kode },
+                          }}
                         >
-                          Detail
-                        </Button>
+                          <Button
+                            variant="secondary"
+                            type="button"
+                            className="w-auto inline-block bg-blue-500 text-neutral-50 px-3 py-1.5 h-auto text-xs xl:text-sm rounded-md"
+                          >
+                            Detail
+                          </Button>
+                        </Link>
                         <span className="mx-1.5">||</span>
                         <Button
                           variant="secondary"
                           type="button"
                           className="w-auto inline-block bg-red-500 text-neutral-50 px-3 py-1.5 h-auto text-xs xl:text-sm rounded-md"
-                          onClick={() => handleDelete(transaksi.id)}
+                          onClick={() => handleDelete(transaksi.kode)}
                         >
                           Delete
                         </Button>
